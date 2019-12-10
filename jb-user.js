@@ -1,6 +1,19 @@
-//ui update needs to be fixed
 //bootstrap
 //ui should only display tickets that the signed-in user has submitted
+
+/*
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      console.log("onAuthStateChanged");
+      console.log(user);
+      let signoutButton = document.getElementById("signoutButton");
+      message.innerHTML = `<button type="submit" id="signoutButton" onclick="signOut()" class="btn btn-primary">log out</button>`
+    } else {
+      // User is signed out.
+      // ...
+    }
+  });
+  */
 
 let viewAllButton = document.getElementById("viewAllButton")
 let ticketSubject = document.getElementById("ticketSubject")
