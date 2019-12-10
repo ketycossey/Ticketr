@@ -1,19 +1,7 @@
+//status
+//ui update needs to be fixed
 //bootstrap
 //ui should only display tickets that the signed-in user has submitted
-
-/*
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      console.log("onAuthStateChanged");
-      console.log(user);
-      let signoutButton = document.getElementById("signoutButton");
-      message.innerHTML = `<button type="submit" id="signoutButton" onclick="signOut()" class="btn btn-primary">log out</button>`
-    } else {
-      // User is signed out.
-      // ...
-    }
-  });
-  */
 
 let viewAllButton = document.getElementById("viewAllButton")
 let ticketSubject = document.getElementById("ticketSubject")
@@ -28,7 +16,6 @@ var database = firebase.database()
 let root = database.ref()
 let ticketsRef = root.child("Tickets")
 
-
 function setupObservers() {
 
     ticketsRef.on("value", (snapshot) => {
@@ -39,28 +26,26 @@ function setupObservers() {
             let ticket = snapshotValue[key] 
             ticket.ticketId = key
             allTickets.push(ticket)
-            console.log(ticket)
         }
         updateUI(allTickets)
     })
 }
 
 function cancelTicket(ticketId) {
-    console.log(ticketId)
-    database.ref(`Tickets/${ticketId}/Status`).set("Ticket cancelled by user")
+    ticketsRef.child(ticketId).remove()
 }
 
-function updateUI(allTickets) {    
+function updateUI(allTickets) {
+    allTicketsUL.innerHTML = ""
     let allTicketsAttributes = allTickets.map((ticket) => {
-        return `
-                <div class="ticket">
-                    Subject: ${ticket.Subject}
-                    <p>Submitted at: ${ticket.Date}</p>
-                    <p>Priority: ${ticket.Priority}</p>
-                    <p>Description: ${ticket.Description}</p>
+        return `Subject: ${ticketSubject.value}
+                <li>
+                    <input type='hidden' value='${ticket.ticketId}'></input>
+                    <p>Submitted at: ${date}</p>
+                    <p>Priority: ${ticketPriority.value}</p>
+                    <p>Description: ${ticketDescription.value}</p>
                     <button onclick='cancelTicket("${ticket.ticketId}")'>Cancel</button>
-                </div>
-               `
+                </li>`
     })
     allTicketsUL.innerHTML = allTicketsAttributes.join('')
 }
@@ -71,16 +56,14 @@ ticketSubmit.addEventListener("click", () => {
     let description = ticketDescription.value
     let priority = ticketPriority.value
     let emailOfUser = userEmail.value
-    let date_db = date
-    let status = "Unresolved"
+    let date_db = date 
 
-   ticketsRef.push({
+   ticketsRef.child(subject).push({
         Date: date_db,
         Request_From: emailOfUser,
         Priority: priority,
         Subject: subject,
-        Description: description,
-        Status: status
+        Description: description
     })
 })
 
