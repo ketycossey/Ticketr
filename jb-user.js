@@ -1,4 +1,3 @@
-//status
 //ui update needs to be fixed
 //bootstrap
 //ui should only display tickets that the signed-in user has submitted
@@ -27,25 +26,27 @@ function setupObservers() {
             ticket.ticketId = key
             allTickets.push(ticket)
         }
+        console.log(snapshotValue)
         updateUI(allTickets)
     })
 }
 
 function cancelTicket(ticketId) {
-    ticketsRef.child(ticketId).remove()
+
+    ticketsRef.ref(ticketId/Status).set("Ticket cancelled by user")
 }
 
-function updateUI(allTickets) {
-    allTicketsUL.innerHTML = ""
+function updateUI(allTickets) {    
     let allTicketsAttributes = allTickets.map((ticket) => {
-        return `Subject: ${ticketSubject.value}
-                <li>
-                    <input type='hidden' value='${ticket.ticketId}'></input>
-                    <p>Submitted at: ${date}</p>
-                    <p>Priority: ${ticketPriority.value}</p>
-                    <p>Description: ${ticketDescription.value}</p>
+        return `
+                <div class="ticket">
+                    Subject: ${ticket.Subject}
+                    <p>Submitted at: ${ticket.Date}</p>
+                    <p>Priority: ${ticket.Priority}</p>
+                    <p>Description: ${ticket.Description}</p>
                     <button onclick='cancelTicket("${ticket.ticketId}")'>Cancel</button>
-                </li>`
+                </div>
+               `
     })
     allTicketsUL.innerHTML = allTicketsAttributes.join('')
 }
@@ -56,14 +57,16 @@ ticketSubmit.addEventListener("click", () => {
     let description = ticketDescription.value
     let priority = ticketPriority.value
     let emailOfUser = userEmail.value
-    let date_db = date 
+    let date_db = date
+    let status = "Unresolved"
 
    ticketsRef.child(subject).push({
         Date: date_db,
         Request_From: emailOfUser,
         Priority: priority,
         Subject: subject,
-        Description: description
+        Description: description,
+        Status: status
     })
 })
 
