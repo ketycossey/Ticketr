@@ -19,50 +19,77 @@ let viewAllButton = document.getElementById("viewAllButton")
 let ticketSubject = document.getElementById("ticketSubject")
 let ticketDescription = document.getElementById("ticketDescription")
 let allTicketsUL = document.getElementById("allTicketsUL")
+let archiveUL = document.getElementById("archiveUL")
 let ticketSubmit = document.getElementById("ticketSubmit")
+let viewArchiveButton = document.getElementById("viewArchiveButton")
 let ticketPriority = document.getElementById("ticketPriority")
 let userEmail = document.getElementById("userEmail")
 let date = Date()
+let allTickets = []
 
 var database = firebase.database()
 let root = database.ref()
-let ticketsRef = root.child("Tickets")
+let ticketsRef = root.child("Tickets") 
 
+viewAllButton.addEventListener("click", setupObservers)
+viewArchiveButton.addEventListener("click", () => {
+    allTicketsUL.innerHTML = ""
+    archiveUL.style.cssText = "display: flex;"
+})
 
 function setupObservers() {
-
+    archiveUL.style.cssText = "display: none;"
     ticketsRef.on("value", (snapshot) => {
-        let allTickets = []
+        allTickets = []
         let snapshotValue = snapshot.val()
 
         for(let key in snapshotValue) {
             let ticket = snapshotValue[key] 
             ticket.ticketId = key
             allTickets.push(ticket)
-            console.log(ticket)
         }
         updateUI(allTickets)
     })
 }
 
 function cancelTicket(ticketId) {
-    console.log(ticketId)
     database.ref(`Tickets/${ticketId}/Status`).set("Ticket cancelled by user")
 }
 
+function sendTicketToArchive(index) {
+
+    let ticket = allTickets[index]
+    let archivedDate = Date()
+    let subject = ticket.Subject
+    let date = ticket.Date
+    let description = ticket.Description
+    archiveUL.innerHTML += ` 
+                <div class="archived-ticket">
+                    Subject: ${subject}
+                    <p>Description: ${description}</p>
+                    <p>Submitted at: ${date}</p>
+                    <p>Archived at: ${archivedDate}</p>
+                </div>
+               `
+    }
+
 function updateUI(allTickets) {    
-    let allTicketsAttributes = allTickets.map((ticket) => {
+    let allTicketsAttributes = allTickets.map((ticket, index) => {
         return `
                 <div class="ticket">
                     Subject: ${ticket.Subject}
                     <p>Submitted at: ${ticket.Date}</p>
                     <p>Priority: ${ticket.Priority}</p>
                     <p>Description: ${ticket.Description}</p>
-                    <button onclick='cancelTicket("${ticket.ticketId}")'>Cancel</button>
+                    <div id="ticketButtons">
+                        <button onclick='cancelTicket("${ticket.ticketId}")'>Cancel</button>
+                        <button onclick='sendTicketToArchive(${index})'>Remove</button>
+                    </div>
                 </div>
                `
     })
-    allTicketsUL.innerHTML = allTicketsAttributes.join('')
+        allTicketsUL.innerHTML = allTicketsAttributes.join('')
+
 }
 
 ticketSubmit.addEventListener("click", () => {
@@ -83,6 +110,4 @@ ticketSubmit.addEventListener("click", () => {
         Status: status
     })
 })
-
-setupObservers()
 
