@@ -1,19 +1,6 @@
 //bootstrap
 //ui should only display tickets that the signed-in user has submitted
-
-/*
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      console.log("onAuthStateChanged");
-      console.log(user);
-      let signoutButton = document.getElementById("signoutButton");
-      message.innerHTML = `<button type="submit" id="signoutButton" onclick="signOut()" class="btn btn-primary">log out</button>`
-    } else {
-      // User is signed out.
-      // ...
-    }
-  });
-  */
+//ui should remove tickets from All Tickets when the remove button is pressed
 
 let viewAllButton = document.getElementById("viewAllButton")
 let ticketSubject = document.getElementById("ticketSubject")
@@ -71,6 +58,8 @@ function sendTicketToArchive(index) {
                     <p>Archived at: ${archivedDate}</p>
                 </div>
                `
+    allTickets.splice(index, 1)
+    updateUI(allTickets)
     }
 
 function updateUI(allTickets) {    
@@ -111,3 +100,32 @@ ticketSubmit.addEventListener("click", () => {
     })
 })
 
+
+/*
+function submitTicket() {
+    let ticketSubject = document.getElementById("ticketSubject")
+    let ticketDescription = document.getElementById("ticketDescription")
+    let allTicketsUL = document.getElementById("allTicketsUL")
+    let ticketSubmit = document.getElementById("ticketSubmit")
+    let ticketPriority = document.getElementById("ticketPriority")
+    let date = Date()
+
+    event.preventDefault()
+    let subject = ticketSubject.value
+    let description = ticketDescription.value
+    let priority = ticketPriority.value
+    var user = firebase.auth().currentUser;
+    let emailOfUser = user.email
+    let date_db = date
+    let status = "Unresolved"
+
+   ticketsRef.push({
+        Date: date_db,
+        Request_From: emailOfUser,
+        Priority: priority,
+        Subject: subject,
+        Description: description,
+        Status: status
+    })
+}
+*/
