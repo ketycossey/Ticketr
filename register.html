@@ -13,7 +13,7 @@
 
   <body class='bg-light'>
         <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-                <a class="navbar-brand" href="#">TICKETR.</a>
+                <a class="navbar-brand text-light" href="#">TICKETR.</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
@@ -35,21 +35,33 @@
         <div class="container">
             <div class="row jumbotron bg-primary" id="clear-content-on-login">
                 <div class="col-7">
-                    <div class="container">
-                      <h1 class="display-4">Sign Up for Ticketr.</h1>
+                    <div class="container text-light">
+                      <h1 class="display-4">Sign Up for <b>Ticketr.</b></h1>
                       <p class="lead">Where you need help, we've got the solution.</p>
                     </div>
                   
     </div>
     <div class="col-4">
-            <form>
+            <form class='text-light'>
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Email address</label>
+                      <label for="exampleInputEmail1">Email address*</label>
                       <input type="email" class="form-control" id="registerEmailTextBox" aria-describedby="emailHelp">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Password</label>
+                      <label for="exampleInputEmail1">First Name</label>
+                      <input type="email" class="form-control" id="registerFNameTextBox">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Last Name</label>
+                      <input type="email" class="form-control" id="registerLNameTextBox">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Password*</label>
                       <input type="password" class="form-control" id="registerPasswordTextBox">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Confirm Password*</label>
+                      <input type="password" class="form-control" id="registerPasswordTextBox2">
                     </div>
                     <div class="form-group form-check">
                     </div>

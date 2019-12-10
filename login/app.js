@@ -17,7 +17,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     <div class="row">
       <div class="col">
     <div class='form-group'>
-      <label class='text-light'>Hello, ${user.email}</label>
+      <label class='text-light'>Hello, <b>${user.email}</b></label><br/>
       <label class='text-light'>Ticket Subject</label>
       <input type="text" class="form-control" id="ticketSubject" placeholder="subject">
       <label for="exampleFormControlTextarea1" class='text-light'>Ticket Description</label>
@@ -31,6 +31,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               </select>
           </div>
               <button type="submit" onclick="submitTicket()" class="btn btn-light" id="ticketSubmit">Submit Ticket</button>
+              <button type="submit" id="signoutButton" onclick="signOut()" class="btn btn-light">Sign Out</button>
         </div>
         </div>
       </div>
@@ -40,7 +41,7 @@ firebase.auth().onAuthStateChanged(function(user) {
  
 
     let signoutButton = document.getElementById("signoutButton");
-    page_content.innerHTML += `<br/><button type="submit" id="signoutButton" onclick="signOut()" class="btn btn-light">Sign Out</button>`
+    page_content.innerHTML += ``
   } else {
     // User is signed out.
     // ...
