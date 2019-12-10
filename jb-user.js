@@ -15,6 +15,7 @@ var database = firebase.database()
 let root = database.ref()
 let ticketsRef = root.child("Tickets")
 
+
 function setupObservers() {
 
     ticketsRef.on("value", (snapshot) => {
@@ -25,15 +26,15 @@ function setupObservers() {
             let ticket = snapshotValue[key] 
             ticket.ticketId = key
             allTickets.push(ticket)
+            console.log(ticket)
         }
-        console.log(snapshotValue)
         updateUI(allTickets)
     })
 }
 
 function cancelTicket(ticketId) {
-
-    ticketsRef.ref(ticketId/Status).set("Ticket cancelled by user")
+    console.log(ticketId)
+    database.ref(`Tickets/${ticketId}/Status`).set("Ticket cancelled by user")
 }
 
 function updateUI(allTickets) {    
@@ -60,7 +61,7 @@ ticketSubmit.addEventListener("click", () => {
     let date_db = date
     let status = "Unresolved"
 
-   ticketsRef.child(subject).push({
+   ticketsRef.push({
         Date: date_db,
         Request_From: emailOfUser,
         Priority: priority,
