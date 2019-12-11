@@ -1,0 +1,17 @@
+* {
+  padding: 10px;
+}
+
+.ticket {
+  margin-top: 5px;
+  border: 2px solid black;
+}
+
+.archived-ticket {
+  margin-top: 5px;
+  border: 4px solid orange;
+}
+
+#archiveUL {
+  display: none;
+}
