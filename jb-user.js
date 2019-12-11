@@ -95,10 +95,11 @@ function updateUI(allTickets) {
 function submitTicket() {
   let ticketSubject = document.getElementById("ticketSubject");
   let ticketDescription = document.getElementById("ticketDescription");
-  let allTicketsUL = document.getElementById("allTicketsUL");
-  let ticketSubmit = document.getElementById("ticketSubmit");
+  //let allTicketsUL = document.getElementById("allTicketsUL");
+  //let ticketSubmit = document.getElementById("ticketSubmit");
   let ticketPriority = document.getElementById("ticketPriority");
   let date = Date();
+  let dateMil = Date.now()
 
   event.preventDefault();
   let subject = ticketSubject.value;
@@ -107,9 +108,11 @@ function submitTicket() {
   var user = firebase.auth().currentUser;
   let emailOfUser = user.email;
   let date_db = date;
+  let dateMillisec = dateMil;
   let status = "Unresolved";
 
   ticketsRef.push({
+    DateMil: dateMillisec,
     Date: date_db,
     Request_From: emailOfUser,
     Priority: priority,
