@@ -55,6 +55,7 @@ function cancelTicket(ticketId) {
 
 // removes a ticket from the all tickets list and sends it to the archive list. button is in updateUI
 function sendTicketToArchive(index) {
+  console.log("sending ticket to arcjibe");
   let ticket = allTickets[index];
   let archivedDate = Date();
   let subject = ticket.Subject;
