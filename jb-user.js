@@ -7,6 +7,7 @@
 
 //bootstrap
 //ui should only display tickets that the signed-in user has submitted
+//archive needs to be permanent 
 
 // global variables
 let viewAllButton = document.getElementById("viewAllButton");
@@ -23,9 +24,10 @@ let allTickets = [];
 var database = firebase.database();
 let root = database.ref();
 let ticketsRef = root.child("Tickets");
+let archiveRef = root.child("Archived Tickets")
 
 // View all tickets button **** needs to only display tickets for logged-in user
-function viewAllTickets() {
+function viewArchive() {
   allTicketsUL.innerHTML = "";
   archiveUL.style.cssText = "display: flex;";
 }
@@ -66,8 +68,16 @@ function sendTicketToArchive(index) {
                     <p>Archived at: ${archivedDate}</p>
                 </div>
                `;
+
   allTickets.splice(index, 1);
   updateUI(allTickets);
+  archiveRef.push(ticket)
+  console.log(ticket)
+  console.log(allTickets)
+  console.log(index)
+  //ticketsRef.remove(ticket)
+  let removeTicket = database.ref(`Tickets/${allTickets[index + 1].ticketId}`)
+  removeTicket.remove()
 }
 
 // updateUI function updates list of all tickets as they're entered
@@ -94,8 +104,8 @@ function updateUI(allTickets) {
 function submitTicket() {
   let ticketSubject = document.getElementById("ticketSubject");
   let ticketDescription = document.getElementById("ticketDescription");
-  //let allTicketsUL = document.getElementById("allTicketsUL");
-  //let ticketSubmit = document.getElementById("ticketSubmit");
+  //let allTicketsUL = document.getElementById("allTicketsUL"); //unused variable
+  //let ticketSubmit = document.getElementById("ticketSubmit"); //unused variable
   let ticketPriority = document.getElementById("ticketPriority");
   let date = Date();
   let dateMil = Date.now()

@@ -16,7 +16,7 @@
       </select>
       <input type="submit" id="ticketSubmit" />
       <button onclick="setupObservers()" id="viewAllButton">All Tickets</button>
-      <button onclick="viewAllTickets" id="viewArchiveButton">Archive</button>
+      <button onclick="viewArchive()" id="viewArchiveButton">Archive</button>
 
       <div id="allTicketsUL"></div>
       <div id="archiveUL"></div>
@@ -46,5 +46,6 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
   </script>
+  <!-- <script src="js/connect.js"></script> -->
   <script src="jb-user.js"></script>
 </html>
