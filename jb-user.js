@@ -1,7 +1,15 @@
+/*
+    kety@ticketr.com
+    baylie@ticketr.com
+    john@ticketr.com
+    jb@ticketr.com
+*/
+
 //bootstrap
 //ui should only display tickets that the signed-in user has submitted
-//ui should remove tickets from All Tickets when the remove button is pressed
 
+
+// global variables 
 let viewAllButton = document.getElementById("viewAllButton")
 let ticketSubject = document.getElementById("ticketSubject")
 let ticketDescription = document.getElementById("ticketDescription")
@@ -13,17 +21,18 @@ let ticketPriority = document.getElementById("ticketPriority")
 let userEmail = document.getElementById("userEmail")
 let date = Date()
 let allTickets = []
-
 var database = firebase.database()
 let root = database.ref()
 let ticketsRef = root.child("Tickets") 
 
+// View all tickets button **** needs to only display tickets for logged-in user
 viewAllButton.addEventListener("click", setupObservers)
 viewArchiveButton.addEventListener("click", () => {
     allTicketsUL.innerHTML = ""
     archiveUL.style.cssText = "display: flex;"
 })
 
+// detects new input and activates function that updates UI
 function setupObservers() {
     archiveUL.style.cssText = "display: none;"
     ticketsRef.on("value", (snapshot) => {
@@ -39,10 +48,12 @@ function setupObservers() {
     })
 }
 
+// this function changes the status of a ticket in the database to cancelled. button is in updateUI
 function cancelTicket(ticketId) {
     database.ref(`Tickets/${ticketId}/Status`).set("Ticket cancelled by user")
 }
 
+// removes a ticket from the all tickets list and sends it to the archive list. button is in updateUI
 function sendTicketToArchive(index) {
 
     let ticket = allTickets[index]
@@ -62,6 +73,7 @@ function sendTicketToArchive(index) {
     updateUI(allTickets)
     }
 
+// updateUI function updates list of all tickets as they're entered
 function updateUI(allTickets) {    
     let allTicketsAttributes = allTickets.map((ticket, index) => {
         return `
@@ -81,6 +93,7 @@ function updateUI(allTickets) {
 
 }
 
+// adds a ticket to the database upon clicking submit
 ticketSubmit.addEventListener("click", () => {
 
     let subject = ticketSubject.value
