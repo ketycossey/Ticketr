@@ -20,7 +20,6 @@ function priorityRanking(Priority) {
   } else if (Priority == "High") {
     return 3;
   }
-  ``;
 }
 
 function sortByPriority(allTickets) {
@@ -29,7 +28,18 @@ function sortByPriority(allTickets) {
   });
   console.log(allTickets);
 }
-// }
+
+function statusRanking(Status) {
+  if (Status === "Resolved") {
+    return 1;
+  } else if (Status === "Unresolved") {
+    return 2;
+  } else if (Status === "In Progress") {
+    return 3;
+  }
+}
+
+function sortByStatus(allTickets) {}
 
 function setupObservers() {
   ticketsRef.on("value", snapshot => {
