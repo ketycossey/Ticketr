@@ -30,6 +30,41 @@ let archiveRef = root.child("Archived Tickets")
 function viewArchive() {
   allTicketsUL.innerHTML = "";
   archiveUL.style.cssText = "display: flex;";
+  setupArchiveObservers()
+  }
+
+function setupArchiveObservers() {
+  archiveRef.on("value", snapshot => {
+    archiveTickets = [];
+    let snapshotValue = snapshot.val();
+
+    for (let key in snapshotValue) {
+      let archiveTicket = snapshotValue[key];
+      archiveTicket.ticketId = key;
+      //console.log(archiveTickets)
+      archiveTickets.push(archiveTicket);
+      //console.log(archiveTicket)
+    }
+    updateArchiveUI(archiveTickets)
+  })
+}
+
+function updateArchiveUI(archiveTickets) {
+  let allArchiveTicketsAttributes = archiveTickets.map((archiveTicket, index) => {
+    return `
+                <div class="ticket">
+                    Subject: ${archiveTicket.Subject}
+                    <p>Submitted at: ${archiveTicket.Date}</p>
+                    <p>Priority: ${archiveTicket.Priority}</p>
+                    <p>Description: ${archiveTicket.Description}</p>
+                    <div id="ticketButtons">
+                        <button onclick='cancelTicket("${archiveTicket.ticketId}")'>Cancel</button>
+                        <button onclick='sendTicketToArchive(${index})'>Remove</button>
+                    </div>
+                </div>
+               `;
+  });
+  archiveUL.innerHTML = allArchiveTicketsAttributes.join("");
 }
 
 // detects new input and activates function that updates UI
@@ -55,7 +90,7 @@ function cancelTicket(ticketId) {
 
 // removes a ticket from the all tickets list and sends it to the archive list. button is in updateUI
 function sendTicketToArchive(index) {
-  console.log("sending ticket to arcjibe");
+  console.log("sending ticket to archive");
   let ticket = allTickets[index];
   let archivedDate = Date();
   let subject = ticket.Subject;
@@ -73,11 +108,7 @@ function sendTicketToArchive(index) {
   allTickets.splice(index, 1);
   updateUI(allTickets);
   archiveRef.push(ticket)
-  console.log(ticket)
-  console.log(allTickets)
-  console.log(index)
-  //ticketsRef.remove(ticket)
-  let removeTicket = database.ref(`Tickets/${allTickets[index + 1].ticketId}`)
+  let removeTicket = database.ref(`Tickets/${ticket.ticketId}`)
   removeTicket.remove()
 }
 
