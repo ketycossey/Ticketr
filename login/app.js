@@ -1,16 +1,21 @@
-
-
 let loginUsernameTextBox = document.getElementById("loginEmailTextBox");
 let loginPasswordTextBox = document.getElementById("loginPasswordTextBox");
 let loginButton = document.getElementById("loginButton");
-let message = document.getElementById('message')
-let welcome = document.getElementById('welcome')
-let page_content = document.getElementById('clear-content-on-login')
-let loginOrOut = document.getElementById('loginorout')
-let script = document.getElementById('script')
+let message = document.getElementById("message");
+let welcome = document.getElementById("welcome");
+let page_content = document.getElementById("clear-content-on-login");
+let loginOrOut = document.getElementById("loginorout");
+let script = document.getElementById("script");
+let navItem2 = document.getElementById("navItem2");
+let navItem3 = document.getElementById("navItem3");
 
 firebase.auth().onAuthStateChanged(function(user) {
-  if (user) { // if the user is logged in...
+  if (user) {
+    // if the user is logged in...
+    page_content.innerHTML = "";
+    navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="viewTickets.html">View Tickets</a>`;
+    navItem3.innerHTML = `<a class="nav-link" id="navItem3" href="submitTicket.html">Submit Ticket</a>`;
+
     page_content.innerHTML = `
     <div class="container-fluid">
     <h1 class='text-light'>Submit a Ticket</h1>
@@ -36,12 +41,10 @@ firebase.auth().onAuthStateChanged(function(user) {
         </div>
       </div>
   </div>
-    `
-
- 
+    `;
 
     let signoutButton = document.getElementById("signoutButton");
-    page_content.innerHTML += ``
+    page_content.innerHTML += ``;
   } else {
     // User is signed out.
     // ...
@@ -49,7 +52,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 loginButton.addEventListener("click", () => {
-event.preventDefault()
+  event.preventDefault();
   let email = loginEmailTextBox.value;
   let password = loginPasswordTextBox.value;
   firebase
@@ -59,22 +62,22 @@ event.preventDefault()
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-      message.innerHTML = errorMessage
+      message.innerHTML = errorMessage;
       // ...
     });
-})
+});
 
 function signOut() {
-    firebase
-      .auth()
-      .signOut()
-      .then(
-        function() {
-          message.innerHTML = 'Signed Out!'
-          window.location.reload()
-        },
-        function(error) {
-          console.error("Sign Out Error", error);
-        }
-      );
-  }
+  firebase
+    .auth()
+    .signOut()
+    .then(
+      function() {
+        message.innerHTML = "Signed Out!";
+        window.location.reload();
+      },
+      function(error) {
+        console.error("Sign Out Error", error);
+      }
+    );
+}
