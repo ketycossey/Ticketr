@@ -20,7 +20,6 @@ function priorityRanking(Priority) {
   } else if (Priority == "High") {
     return 3;
   }
-  ``;
 }
 
 function sortByPriority(allTickets) {
@@ -29,7 +28,25 @@ function sortByPriority(allTickets) {
   });
   console.log(allTickets);
 }
-// }
+
+function statusRanking(Status) {
+  if (Status === "Resolved") {
+    return 1;
+  } else if (Status === "Unresolved") {
+    return 2;
+  } else if (Status === "In Progress") {
+    return 3;
+  } else {
+    return null;
+  }
+}
+
+function sortByStatus(allTickets) {
+  allTickets.sort((a, b) => {
+    return statusRanking(b.Status) - statusRanking(a.Status);
+  });
+  console.log(allTickets);
+}
 
 function setupObservers() {
   ticketsRef.on("value", snapshot => {
@@ -43,6 +60,7 @@ function setupObservers() {
       ticket.ticketId = key;
       allTickets.push(ticket);
     }
+    sortByStatus(allTickets);
     console.log(allTickets);
     updateUI(allTickets);
   });
@@ -67,10 +85,31 @@ function displayPriority() {
   });
 }
 
+function displayStatus() {
+  allTicketsUL.innerHTML = "";
+  ticketsRef.on("value", snapshot => {
+    let allTickets = [];
+    let snapshotValue = snapshot.val();
+
+    console.log(snapshotValue);
+
+    for (let key in snapshotValue) {
+      let ticket = snapshotValue[key];
+      ticket.ticketId = key;
+      allTickets.push(ticket);
+    }
+    sortByStatus(allTickets);
+    console.log(allTickets);
+    updateUI(allTickets);
+  });
+}
+
 function displayOptions(value) {
   console.log(value);
   if (value === "Priority") {
     displayPriority();
+  } else if (value === "Status") {
+    displayStatus();
   } else if (value === "Date") {
     setupObservers();
   } else {
