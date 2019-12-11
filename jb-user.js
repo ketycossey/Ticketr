@@ -1,88 +1,133 @@
+/*
+    kety@ticketr.com
+    baylie@ticketr.com
+    john@ticketr.com
+    jb@ticketr.com
+*/
+
 //bootstrap
 //ui should only display tickets that the signed-in user has submitted
+//archive needs to be permanent 
 
-/*
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      console.log("onAuthStateChanged");
-      console.log(user);
-      let signoutButton = document.getElementById("signoutButton");
-      message.innerHTML = `<button type="submit" id="signoutButton" onclick="signOut()" class="btn btn-primary">log out</button>`
-    } else {
-      // User is signed out.
-      // ...
-    }
-  });
-  */
+// global variables
+let viewAllButton = document.getElementById("viewAllButton");
+let ticketSubject = document.getElementById("ticketSubject");
+let ticketDescription = document.getElementById("ticketDescription");
+let allTicketsUL = document.getElementById("allTicketsUL");
+let archiveUL = document.getElementById("archiveUL");
+let ticketSubmit = document.getElementById("ticketSubmit");
+let viewArchiveButton = document.getElementById("viewArchiveButton");
+let ticketPriority = document.getElementById("ticketPriority");
+let userEmail = document.getElementById("userEmail");
+let date = Date();
+let allTickets = [];
+var database = firebase.database();
+let root = database.ref();
+let ticketsRef = root.child("Tickets");
+let archiveRef = root.child("Archived Tickets")
 
-let viewAllButton = document.getElementById("viewAllButton")
-let ticketSubject = document.getElementById("ticketSubject")
-let ticketDescription = document.getElementById("ticketDescription")
-let allTicketsUL = document.getElementById("allTicketsUL")
-let ticketSubmit = document.getElementById("ticketSubmit")
-let ticketPriority = document.getElementById("ticketPriority")
-let userEmail = document.getElementById("userEmail")
-let date = Date()
+// View all tickets button **** needs to only display tickets for logged-in user
+function viewArchive() {
+  allTicketsUL.innerHTML = "";
+  archiveUL.style.cssText = "display: flex;";
+}
 
-var database = firebase.database()
-let root = database.ref()
-let ticketsRef = root.child("Tickets")
-
-
+// detects new input and activates function that updates UI
 function setupObservers() {
+  archiveUL.style.cssText = "display: none;";
+  ticketsRef.on("value", snapshot => {
+    allTickets = [];
+    let snapshotValue = snapshot.val();
 
-    ticketsRef.on("value", (snapshot) => {
-        let allTickets = []
-        let snapshotValue = snapshot.val()
-
-        for(let key in snapshotValue) {
-            let ticket = snapshotValue[key] 
-            ticket.ticketId = key
-            allTickets.push(ticket)
-            console.log(ticket)
-        }
-        updateUI(allTickets)
-    })
+    for (let key in snapshotValue) {
+      let ticket = snapshotValue[key];
+      ticket.ticketId = key;
+      allTickets.push(ticket);
+    }
+    updateUI(allTickets);
+  });
 }
 
+// this function changes the status of a ticket in the database to cancelled. button is in updateUI
 function cancelTicket(ticketId) {
-    console.log(ticketId)
-    database.ref(`Tickets/${ticketId}/Status`).set("Ticket cancelled by user")
+  database.ref(`Tickets/${ticketId}/Status`).set("Ticket cancelled by user");
 }
 
-function updateUI(allTickets) {    
-    let allTicketsAttributes = allTickets.map((ticket) => {
-        return `
+// removes a ticket from the all tickets list and sends it to the archive list. button is in updateUI
+function sendTicketToArchive(index) {
+  console.log("sending ticket to arcjibe");
+  let ticket = allTickets[index];
+  let archivedDate = Date();
+  let subject = ticket.Subject;
+  let date = ticket.Date;
+  let description = ticket.Description;
+  archiveUL.innerHTML += ` 
+                <div class="archived-ticket">
+                    Subject: ${subject}
+                    <p>Description: ${description}</p>
+                    <p>Submitted at: ${date}</p>
+                    <p>Archived at: ${archivedDate}</p>
+                </div>
+               `;
+
+  allTickets.splice(index, 1);
+  updateUI(allTickets);
+  archiveRef.push(ticket)
+  console.log(ticket)
+  console.log(allTickets)
+  console.log(index)
+  //ticketsRef.remove(ticket)
+  let removeTicket = database.ref(`Tickets/${allTickets[index + 1].ticketId}`)
+  removeTicket.remove()
+}
+
+// updateUI function updates list of all tickets as they're entered
+function updateUI(allTickets) {
+  let allTicketsAttributes = allTickets.map((ticket, index) => {
+    return `
                 <div class="ticket">
                     Subject: ${ticket.Subject}
                     <p>Submitted at: ${ticket.Date}</p>
                     <p>Priority: ${ticket.Priority}</p>
                     <p>Description: ${ticket.Description}</p>
-                    <button onclick='cancelTicket("${ticket.ticketId}")'>Cancel</button>
+                    <div id="ticketButtons">
+                        <button onclick='cancelTicket("${ticket.ticketId}")'>Cancel</button>
+                        <button onclick='sendTicketToArchive(${index})'>Remove</button>
+                    </div>
                 </div>
-               `
-    })
-    allTicketsUL.innerHTML = allTicketsAttributes.join('')
+               `;
+  });
+  allTicketsUL.innerHTML = allTicketsAttributes.join("");
 }
 
-ticketSubmit.addEventListener("click", () => {
+// adds a ticket to the database upon clicking submit
 
-    let subject = ticketSubject.value
-    let description = ticketDescription.value
-    let priority = ticketPriority.value
-    let emailOfUser = userEmail.value
-    let date_db = date
-    let status = "Unresolved"
+function submitTicket() {
+  let ticketSubject = document.getElementById("ticketSubject");
+  let ticketDescription = document.getElementById("ticketDescription");
+  //let allTicketsUL = document.getElementById("allTicketsUL"); //unused variable
+  //let ticketSubmit = document.getElementById("ticketSubmit"); //unused variable
+  let ticketPriority = document.getElementById("ticketPriority");
+  let date = Date();
+  let dateMil = Date.now()
 
-   ticketsRef.push({
-        Date: date_db,
-        Request_From: emailOfUser,
-        Priority: priority,
-        Subject: subject,
-        Description: description,
-        Status: status
-    })
-})
+  event.preventDefault();
+  let subject = ticketSubject.value;
+  let description = ticketDescription.value;
+  let priority = ticketPriority.value;
+  var user = firebase.auth().currentUser;
+  let emailOfUser = user.email;
+  let date_db = date;
+  let dateMillisec = dateMil;
+  let status = "Unresolved";
 
-setupObservers()
-
+  ticketsRef.push({
+    DateMil: dateMillisec,
+    Date: date_db,
+    Request_From: emailOfUser,
+    Priority: priority,
+    Subject: subject,
+    Description: description,
+    Status: status
+  });
+}
