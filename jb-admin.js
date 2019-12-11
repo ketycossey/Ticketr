@@ -12,25 +12,24 @@ let root = database.ref();
 let ticketsRef = root.child("Tickets");
 
 function priorityRanking(Priority) {
-  console.log(Priority);
-  if (Priority == "low") {
+  // console.log(Priority);
+  if (Priority == "Low") {
     return 1;
-  } else if (Priority == "medium") {
+  } else if (Priority == "Medium") {
     return 2;
-  } else if (Priority == "high") {
+  } else if (Priority == "High") {
     return 3;
   }
+  ``;
 }
 
 function sortByPriority(allTickets) {
-  for (let priority in allTickets) {
-    let ranking = allTickets[priority];
-    console.log(ranking);
-    ranking.sort((a, b) => {
-      return priorityRanking(b.Priority) - priorityRanking(a.Priority);
-    });
-  }
+  allTickets.sort((a, b) => {
+    return priorityRanking(b.Priority) - priorityRanking(a.Priority);
+  });
+  console.log(allTickets);
 }
+// }
 
 function setupObservers() {
   ticketsRef.on("value", snapshot => {
@@ -44,10 +43,39 @@ function setupObservers() {
       ticket.ticketId = key;
       allTickets.push(ticket);
     }
-    // sortByPriority(allTickets);
-    // console.log(allTickets);
+    console.log(allTickets);
     updateUI(allTickets);
   });
+}
+
+function displayPriority() {
+  allTicketsUL.innerHTML = "";
+  ticketsRef.on("value", snapshot => {
+    let allTickets = [];
+    let snapshotValue = snapshot.val();
+
+    console.log(snapshotValue);
+
+    for (let key in snapshotValue) {
+      let ticket = snapshotValue[key];
+      ticket.ticketId = key;
+      allTickets.push(ticket);
+    }
+    sortByPriority(allTickets);
+    console.log(allTickets);
+    updateUI(allTickets);
+  });
+}
+
+function displayOptions(value) {
+  console.log(value);
+  if (value === "Priority") {
+    displayPriority();
+  } else if (value === "Date") {
+    setupObservers();
+  } else {
+    alert("Error, your dumbass code isn't working");
+  }
 }
 
 function updateUI(allTickets) {
