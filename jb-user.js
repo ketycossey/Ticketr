@@ -66,7 +66,7 @@ function setupArchiveObservers() {
 function updateArchiveUI(archiveTickets) {
   viewing.innerHTML = "<h2 class='text-light'>Viewing Archived Tickets</h2>";
   let allArchiveTicketsAttributes = archiveTickets.map(
-    (archiveTicket) => {
+    (archiveTicket, index) => {
       return `
       <div class="card">
       <ul class="list-group list-group-flush">
@@ -75,7 +75,8 @@ function updateArchiveUI(archiveTickets) {
         <li class="list-group-item"><b class="text-muted">Priority:</b> ${archiveTicket.Priority}</li>
         <li class="list-group-item"><b class="text-muted">Description: </b>${archiveTicket.Description}</li>
       </ul>
-    </div>`;
+    </div>
+               `;
     }
   );
   archiveUL.innerHTML = allArchiveTicketsAttributes.join("");
@@ -163,7 +164,7 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Submitted at: </b>${ticket.Date}</li>
       <li class="list-group-item"><b class="text-primary">Priority:</b> ${ticket.Priority}</li>
       <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
-      <li class="list-group-item"><b class="text-primary">Status: </b>${ticket.Status}</li>
+      <li class="list-group-item"><b class="text-primary">Status:</b>${ticket.Description}</li>
       <li class="list-group-item"> 
         <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
       </li>

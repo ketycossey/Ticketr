@@ -115,7 +115,7 @@ function displayOptions(value) {
   } else if (value === "Date") {
     setupObservers();
   } else {
-    alert("Error, your dumbass code isn't working");
+    //calert("Error, your dumbass code isn't working");
   }
 }
 
@@ -132,21 +132,34 @@ function updateUI(allTickets) {
   let allTicketsAttributes = allTickets.map((ticket, index) => {
     // console.log(ticket);
     return `
-                <div class="ticket">
-                    Subject: ${ticket.Subject}
-                    <p>Submitted at: ${ticket.Date}</p>
-                    <p>Priority: ${ticket.Priority}</p>
-                    <p>Status: ${ticket.Status}
-                      <select id="ticketPriority" name="Sort" form="sort-form" onChange='changeStatus(this.value, "${ticket.ticketId}")'>
-                        <option value="Unresolved">Unresolved</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Resolved">Resolved</option>
-                      </select>
-                    </p>
-                    <p>Email: ${ticket.Request_From}</p>
-                    <p>Description: ${ticket.Description}</p>
-                    <button onclick='deleteTicket("${ticket.ticketId}")'>Delete</button>
-                </div>
+
+    <div class="card">
+    <ul class="list-group list-group-flush">
+    <li class="list-group-item"><b class="text-primary">Subject:</b> ${ticket.Request_From}</li>
+    <li class="list-group-item"><b class="text-primary">Priority: </b> ${ticket.Priority}
+      <li class="list-group-item"><b class="text-primary">User Email: </b> ${ticket.Request_From}</li>
+      <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
+      <li class="list-group-item"><b class="text-primary">Date Submitted: </b>${ticket.Date}</li>
+      <li class="list-group-item"><b class="text-primary">Status: </b>${ticket.Status}
+      <div class="input-group mb-3">
+<div class="input-group-prepend">
+<label class="input-group-text">Status</label>
+</div>
+<select id="ticketPriority" class="custom-select" name="Sort" form="sort-form" onChange='changeStatus(this.value, "${ticket.ticketId}")'>
+<option selected>Choose</option>
+<option value="Unresolved">Unresolved</option>
+<option value="In Progress">In Progress</option>
+<option value="Resolved">Resolved</option>
+</select>
+</div>
+      <li class="list-group-item">
+      <button class="btn btn-primary" onclick='deleteTicket("${ticket.ticketId}")'>Delete</button>
+      <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
+      </li>
+    </ul>
+  </div>
+
+        
                `;
   });
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
