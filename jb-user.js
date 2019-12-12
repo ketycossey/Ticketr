@@ -68,10 +68,7 @@ function updateArchiveUI(archiveTickets) {
                     <p>Submitted at: ${archiveTicket.Date}</p>
                     <p>Priority: ${archiveTicket.Priority}</p>
                     <p>Description: ${archiveTicket.Description}</p>
-                    <div id="ticketButtons">
-                        <button onclick='cancelTicket("${archiveTicket.ticketId}")'>Cancel</button>
-                        <button onclick='sendTicketToArchive(${index})'>Remove</button>
-                    </div>
+                    
                 </div>
                `;
     }
