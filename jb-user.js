@@ -28,12 +28,13 @@ let ticketsRef = root.child("Tickets");
 let archiveRef = root.child("Archived Tickets");
 let navItem2 = document.getElementById("navItem2");
 let navItem3 = document.getElementById("navItem3");
+let viewing = document.getElementById('viewing')
 
 // View all tickets button **** needs to only display tickets for logged-in user
 function viewArchive() {
-  allTicketsUL.innerHTML = "<h2 class='text-light'>Viewing Archived Tickets</h2>";
   archiveUL.style.cssText = "display: block;";
   setupArchiveObservers();
+  allTicketsUL.style.cssText = "display: none"
 }
 
 function setupArchiveObservers() {
@@ -62,6 +63,7 @@ function setupArchiveObservers() {
 }
 
 function updateArchiveUI(archiveTickets) {
+  viewing.innerHTML = "<h2 class='text-light'>Viewing Archived Tickets</h2>";
   let allArchiveTicketsAttributes = archiveTickets.map(
     (archiveTicket, index) => {
       return `
@@ -92,7 +94,9 @@ firebase.auth().onAuthStateChanged(function(user) {
   })
 
 function setupObservers() {
-  archiveUL.style.cssText = "display: none;";
+  allTicketsUL.style.cssText = 'display:block'
+  viewing.innerHTML = "<h2 class='text-light'>Viewing Open Tickets</h2>";
+  archiveUL.style.cssText = "display: none"
   // Finds the logged in user
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
