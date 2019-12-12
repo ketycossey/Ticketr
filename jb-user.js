@@ -61,14 +61,13 @@ function setupArchiveObservers() {
 
 function updateArchiveUI(archiveTickets) {
   let allArchiveTicketsAttributes = archiveTickets.map(
-    (archiveTicket, index) => {
+    (archiveTicket) => {
       return `
                 <div class="ticket">
                     Subject: ${archiveTicket.Subject}
                     <p>Submitted at: ${archiveTicket.Date}</p>
                     <p>Priority: ${archiveTicket.Priority}</p>
                     <p>Description: ${archiveTicket.Description}</p>
-                    
                 </div>
                `;
     }

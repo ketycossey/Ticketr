@@ -10,6 +10,8 @@
 var database = firebase.database();
 let root = database.ref();
 let ticketsRef = root.child("Tickets");
+let allTickets = []
+
 
 function priorityRanking(Priority) {
   // console.log(Priority);
@@ -26,7 +28,7 @@ function sortByPriority(allTickets) {
   allTickets.sort((a, b) => {
     return priorityRanking(b.Priority) - priorityRanking(a.Priority);
   });
-  console.log(allTickets);
+  //console.log(allTickets);
 }
 
 function statusRanking(Status) {
@@ -45,7 +47,7 @@ function sortByStatus(allTickets) {
   allTickets.sort((a, b) => {
     return statusRanking(b.Status) - statusRanking(a.Status);
   });
-  console.log(allTickets);
+  //console.log(allTickets);
 }
 
 function setupObservers() {
@@ -53,7 +55,7 @@ function setupObservers() {
     let allTickets = [];
     let snapshotValue = snapshot.val();
 
-    console.log(snapshotValue);
+    //console.log(snapshotValue);
 
     for (let key in snapshotValue) {
       let ticket = snapshotValue[key];
@@ -61,7 +63,7 @@ function setupObservers() {
       allTickets.push(ticket);
     }
     sortByStatus(allTickets);
-    console.log(allTickets);
+    //console.log(allTickets);
     updateUI(allTickets);
   });
 }
@@ -72,7 +74,7 @@ function displayPriority() {
     let allTickets = [];
     let snapshotValue = snapshot.val();
 
-    console.log(snapshotValue);
+    //console.log(snapshotValue);
 
     for (let key in snapshotValue) {
       let ticket = snapshotValue[key];
@@ -80,7 +82,7 @@ function displayPriority() {
       allTickets.push(ticket);
     }
     sortByPriority(allTickets);
-    console.log(allTickets);
+    //console.log(allTickets);
     updateUI(allTickets);
   });
 }
@@ -91,7 +93,7 @@ function displayStatus() {
     let allTickets = [];
     let snapshotValue = snapshot.val();
 
-    console.log(snapshotValue);
+    //console.log(snapshotValue);
 
     for (let key in snapshotValue) {
       let ticket = snapshotValue[key];
@@ -99,13 +101,13 @@ function displayStatus() {
       allTickets.push(ticket);
     }
     sortByStatus(allTickets);
-    console.log(allTickets);
+    //console.log(allTickets);
     updateUI(allTickets);
   });
 }
 
 function displayOptions(value) {
-  console.log(value);
+  //console.log(value);
   if (value === "Priority") {
     displayPriority();
   } else if (value === "Status") {
@@ -117,8 +119,17 @@ function displayOptions(value) {
   }
 }
 
+function changeStatus(newStatus, ticketId) {
+  console.log(ticketId)
+  database.ref(`Tickets/${ticketId}/Status`).set(`${newStatus}`);
+}
+
+function deleteTicket(ticketId) {
+  database.ref(`Tickets/${ticketId}`).remove()
+}
+
 function updateUI(allTickets) {
-  let allTicketsAttributes = allTickets.map(ticket => {
+  let allTicketsAttributes = allTickets.map((ticket, index) => {
     // console.log(ticket);
     return `
                 <div class="ticket">
@@ -126,7 +137,7 @@ function updateUI(allTickets) {
                     <p>Submitted at: ${ticket.Date}</p>
                     <p>Priority: ${ticket.Priority}</p>
                     <p>Status: ${ticket.Status}
-                      <select id="ticketPriority" name="Sort" form="sort-form">
+                      <select id="ticketPriority" name="Sort" form="sort-form" onChange='changeStatus(this.value, "${ticket.ticketId}")'>
                         <option value="Unresolved">Unresolved</option>
                         <option value="In Progress">In Progress</option>
                         <option value="Resolved">Resolved</option>
