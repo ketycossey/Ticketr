@@ -30,6 +30,8 @@ let archiveRef = root.child("Archived Tickets");
 let navItem2 = document.getElementById("navItem2");
 let navItem3 = document.getElementById("navItem3");
 let viewing = document.getElementById('viewing')
+let signoutButton = document.getElementById('signOutButton')
+
 
 // View all tickets button **** needs to only display tickets for logged-in user
 function viewArchive() {
@@ -164,7 +166,7 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Submitted at: </b>${ticket.Date}</li>
       <li class="list-group-item"><b class="text-primary">Priority:</b> ${ticket.Priority}</li>
       <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
-      <li class="list-group-item"><b class="text-primary">Status:</b>${ticket.Description}</li>
+      <li class="list-group-item"><b class="text-primary">Status:</b>${ticket.Status}</li>
       <li class="list-group-item"> 
         <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
       </li>
@@ -206,4 +208,18 @@ function submitTicket() {
     Description: description,
     Status: status
   });
+}
+
+function signOut() {
+  firebase
+    .auth()
+    .signOut()
+    .then(
+      function() {
+        window.location.href = ('index.html')
+      },
+      function(error) {
+        console.error("Sign Out Error", error);
+      }
+    );
 }

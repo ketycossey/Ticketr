@@ -165,3 +165,18 @@ function updateUI(allTickets) {
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
 }
 setupObservers();
+
+function signOut() {
+  firebase
+    .auth()
+    .signOut()
+    .then(
+      function() {
+        message.innerHTML = "Signed Out!";
+        window.location.reload();
+      },
+      function(error) {
+        console.error("Sign Out Error", error);
+      }
+    );
+}
