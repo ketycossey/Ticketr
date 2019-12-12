@@ -6,11 +6,10 @@ let welcome = document.getElementById("welcome");
 let page_content = document.getElementById("clear-content-on-login");
 let loginOrOut = document.getElementById("loginorout");
 let script = document.getElementById("script");
-let navItem2 = document.getElementById("navItem2");
-let navItem3 = document.getElementById("navItem3");
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
+    
     // if the user is logged in...
     console.log(user.email);
     page_content.innerHTML = "";

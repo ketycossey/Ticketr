@@ -26,11 +26,13 @@ var database = firebase.database();
 let root = database.ref();
 let ticketsRef = root.child("Tickets");
 let archiveRef = root.child("Archived Tickets");
+let navItem2 = document.getElementById("navItem2");
+let navItem3 = document.getElementById("navItem3");
 
 // View all tickets button **** needs to only display tickets for logged-in user
 function viewArchive() {
-  allTicketsUL.innerHTML = "";
-  archiveUL.style.cssText = "display: flex;";
+  allTicketsUL.innerHTML = "<h2 class='text-light'>Viewing Archived Tickets</h2>";
+  archiveUL.style.cssText = "display: block;";
   setupArchiveObservers();
 }
 
@@ -63,13 +65,14 @@ function updateArchiveUI(archiveTickets) {
   let allArchiveTicketsAttributes = archiveTickets.map(
     (archiveTicket, index) => {
       return `
-                <div class="ticket">
-                    Subject: ${archiveTicket.Subject}
-                    <p>Submitted at: ${archiveTicket.Date}</p>
-                    <p>Priority: ${archiveTicket.Priority}</p>
-                    <p>Description: ${archiveTicket.Description}</p>
-                    
-                </div>
+      <div class="card">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><b class="text-muted">subject:</b> ${archiveTicket.Subject}</li>
+        <li class="list-group-item"><b class="text-muted">Submitted at: </b>${archiveTicket.Date}</li>
+        <li class="list-group-item"><b class="text-muted">Priority:</b> ${archiveTicket.Priority}</li>
+        <li class="list-group-item"><b class="text-muted">Description: </b>${archiveTicket.Description}</li>
+      </ul>
+    </div>
                `;
     }
   );
@@ -77,6 +80,16 @@ function updateArchiveUI(archiveTickets) {
 }
 
 // detects new input and activates function that updates UI
+
+
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+  welcome.innerHTML += `Welcome, ${user.email} !`
+  navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="viewTickets.html">View Tickets</a>`;
+  navItem3.innerHTML = `<a class="nav-link" id="navItem3" href="submitTicket.html">Submit Ticket</a>`;
+}
+  })
 
 function setupObservers() {
   archiveUL.style.cssText = "display: none;";
@@ -132,23 +145,26 @@ function sendTicketToArchive(index) {
   archiveRef.push(ticket);
   let removeTicket = database.ref(`Tickets/${ticketID}`);
   removeTicket.remove();
-  console.log(removeTicket);
 }
 
 // updateUI function updates list of all tickets as they're entered
 function updateUI(allTickets) {
   let allTicketsAttributes = allTickets.map((ticket, index) => {
     return `
-                <div class="ticket">
-                    Subject: ${ticket.Subject}
-                    <p>Submitted at: ${ticket.Date}</p>
-                    <p>Priority: ${ticket.Priority}</p>
-                    <p>Description: ${ticket.Description}</p>
-                    <div id="ticketButtons">
-                        <button onclick='cancelTicket("${ticket.ticketId}")'>Cancel</button>
-                        <button onclick='sendTicketToArchive(${index})'>Remove</button>
-                    </div>
-                </div>
+
+    <div class="card">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><b class="text-primary">subject:</b> ${ticket.Subject}</li>
+      <li class="list-group-item"><b class="text-primary">Submitted at: </b>${ticket.Date}</li>
+      <li class="list-group-item"><b class="text-primary">Priority:</b> ${ticket.Priority}</li>
+      <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
+      <li class="list-group-item"> 
+        <button class='btn btn-primary' onclick='cancelTicket("${ticket.ticketId}")'>Cancel</button>
+        <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Remove</button>
+      </li>
+    </ul>
+  </div>
+
                `;
   });
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
