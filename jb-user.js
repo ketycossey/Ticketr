@@ -7,7 +7,7 @@
 
 //bootstrap
 //ui should only display tickets that the signed-in user has submitted
-//archive needs to be permanent 
+//archive needs to be permanent
 
 // global variables
 let viewAllButton = document.getElementById("viewAllButton");
@@ -21,37 +21,48 @@ let ticketPriority = document.getElementById("ticketPriority");
 let userEmail = document.getElementById("userEmail");
 let date = Date();
 let allTickets = [];
+let filteredTickets = [];
 var database = firebase.database();
 let root = database.ref();
 let ticketsRef = root.child("Tickets");
-let archiveRef = root.child("Archived Tickets")
+let archiveRef = root.child("Archived Tickets");
 
 // View all tickets button **** needs to only display tickets for logged-in user
 function viewArchive() {
   allTicketsUL.innerHTML = "";
   archiveUL.style.cssText = "display: flex;";
-  setupArchiveObservers()
-  }
+  setupArchiveObservers();
+}
 
 function setupArchiveObservers() {
-  archiveRef.on("value", snapshot => {
-    archiveTickets = [];
-    let snapshotValue = snapshot.val();
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      archiveRef.on("value", snapshot => {
+        archiveTickets = [];
 
-    for (let key in snapshotValue) {
-      let archiveTicket = snapshotValue[key];
-      archiveTicket.ticketId = key;
-      //console.log(archiveTickets)
-      archiveTickets.push(archiveTicket);
-      //console.log(archiveTicket)
+        let archiveTicketUser = user.email;
+        let snapshotValue = snapshot.val();
+
+        for (let key in snapshotValue) {
+          let archiveTicket = snapshotValue[key];
+          archiveTicket.ticketId = key;
+          //console.log(archiveTickets)
+          archiveTickets.push(archiveTicket);
+          //console.log(archiveTicket)
+        }
+        let filteredArchiveTickets = archiveTickets.filter(
+          ticket => ticket.Request_From === archiveTicketUser
+        );
+        updateArchiveUI(filteredArchiveTickets);
+      });
     }
-    updateArchiveUI(archiveTickets)
-  })
+  });
 }
 
 function updateArchiveUI(archiveTickets) {
-  let allArchiveTicketsAttributes = archiveTickets.map((archiveTicket, index) => {
-    return `
+  let allArchiveTicketsAttributes = archiveTickets.map(
+    (archiveTicket, index) => {
+      return `
                 <div class="ticket">
                     Subject: ${archiveTicket.Subject}
                     <p>Submitted at: ${archiveTicket.Date}</p>
@@ -63,23 +74,35 @@ function updateArchiveUI(archiveTickets) {
                     </div>
                 </div>
                `;
-  });
+    }
+  );
   archiveUL.innerHTML = allArchiveTicketsAttributes.join("");
 }
 
 // detects new input and activates function that updates UI
+
 function setupObservers() {
   archiveUL.style.cssText = "display: none;";
-  ticketsRef.on("value", snapshot => {
-    allTickets = [];
-    let snapshotValue = snapshot.val();
+  // Finds the logged in user
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      ticketsRef.on("value", snapshot => {
+        let ticketUser = user.email;
+        allTickets = [];
+        let snapshotValue = snapshot.val();
 
-    for (let key in snapshotValue) {
-      let ticket = snapshotValue[key];
-      ticket.ticketId = key;
-      allTickets.push(ticket);
+        for (let key in snapshotValue) {
+          let ticket = snapshotValue[key];
+          ticket.ticketId = key;
+          allTickets.push(ticket);
+        }
+        filteredTickets = allTickets.filter(
+          ticket => ticket.Request_From === ticketUser
+        );
+        console.log(filteredTickets);
+        updateUI(filteredTickets);
+      });
     }
-    updateUI(allTickets);
   });
 }
 
@@ -91,7 +114,9 @@ function cancelTicket(ticketId) {
 // removes a ticket from the all tickets list and sends it to the archive list. button is in updateUI
 function sendTicketToArchive(index) {
   console.log("sending ticket to archive");
-  let ticket = allTickets[index];
+  let ticket = filteredTickets[index];
+  let ticketID = ticket.ticketId;
+  console.log(ticketID);
   let archivedDate = Date();
   let subject = ticket.Subject;
   let date = ticket.Date;
@@ -105,11 +130,12 @@ function sendTicketToArchive(index) {
                 </div>
                `;
 
-  allTickets.splice(index, 1);
-  updateUI(allTickets);
-  archiveRef.push(ticket)
-  let removeTicket = database.ref(`Tickets/${ticket.ticketId}`)
-  removeTicket.remove()
+  filteredTickets.splice(index, 1);
+  updateUI(filteredTickets);
+  archiveRef.push(ticket);
+  let removeTicket = database.ref(`Tickets/${ticketID}`);
+  removeTicket.remove();
+  console.log(removeTicket);
 }
 
 // updateUI function updates list of all tickets as they're entered
@@ -140,7 +166,7 @@ function submitTicket() {
   //let ticketSubmit = document.getElementById("ticketSubmit"); //unused variable
   let ticketPriority = document.getElementById("ticketPriority");
   let date = Date();
-  let dateMil = Date.now()
+  let dateMil = Date.now();
 
   event.preventDefault();
   let subject = ticketSubject.value;
