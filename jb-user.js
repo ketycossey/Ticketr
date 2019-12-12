@@ -10,6 +10,7 @@
 //archive needs to be permanent
 
 // global variables
+let isSolved = document.getElementById('isSolved')
 let viewAllButton = document.getElementById("viewAllButton");
 let ticketSubject = document.getElementById("ticketSubject");
 let ticketDescription = document.getElementById("ticketDescription");
@@ -123,6 +124,7 @@ function setupObservers() {
 // this function changes the status of a ticket in the database to cancelled. button is in updateUI
 function cancelTicket(ticketId) {
   database.ref(`Tickets/${ticketId}/Status`).set("Ticket cancelled by user");
+  isSolved.innerHTML = `<button class='btn btn-primary' onclick='cancelTicket("")'>Mark As Unsolved</button>`
 }
 
 // removes a ticket from the all tickets list and sends it to the archive list. button is in updateUI
@@ -162,9 +164,9 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Submitted at: </b>${ticket.Date}</li>
       <li class="list-group-item"><b class="text-primary">Priority:</b> ${ticket.Priority}</li>
       <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
+      <li class="list-group-item"><b class="text-primary">Status: </b>${ticket.Status}</li>
       <li class="list-group-item"> 
-        <button class='btn btn-primary' onclick='cancelTicket("${ticket.ticketId}")'>Cancel</button>
-        <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Remove</button>
+        <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
       </li>
     </ul>
   </div>
