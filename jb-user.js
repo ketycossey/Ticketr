@@ -65,7 +65,7 @@ function setupArchiveObservers() {
 function updateArchiveUI(archiveTickets) {
   viewing.innerHTML = "<h2 class='text-light'>Viewing Archived Tickets</h2>";
   let allArchiveTicketsAttributes = archiveTickets.map(
-    (archiveTicket, index) => {
+    (archiveTicket) => {
       return `
       <div class="card">
       <ul class="list-group list-group-flush">
@@ -74,8 +74,7 @@ function updateArchiveUI(archiveTickets) {
         <li class="list-group-item"><b class="text-muted">Priority:</b> ${archiveTicket.Priority}</li>
         <li class="list-group-item"><b class="text-muted">Description: </b>${archiveTicket.Description}</li>
       </ul>
-    </div>
-               `;
+    </div>`;
     }
   );
   archiveUL.innerHTML = allArchiveTicketsAttributes.join("");
