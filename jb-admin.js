@@ -45,7 +45,6 @@ function sortByStatus(allTickets) {
   allTickets.sort((a, b) => {
     return statusRanking(b.Status) - statusRanking(a.Status);
   });
-  console.log(allTickets);
 }
 
 function setupObservers() {
@@ -53,15 +52,12 @@ function setupObservers() {
     let allTickets = [];
     let snapshotValue = snapshot.val();
 
-    console.log(snapshotValue);
-
     for (let key in snapshotValue) {
       let ticket = snapshotValue[key];
       ticket.ticketId = key;
       allTickets.push(ticket);
     }
     sortByStatus(allTickets);
-    console.log(allTickets);
     updateUI(allTickets);
   });
 }
@@ -117,27 +113,40 @@ function displayOptions(value) {
   }
 }
 
+function changeStatus(val, id) {
+  event.preventDefault;
+  ticketsRef.on("value", snapshot => {
+    snapshotVal = snapshot.val();
+    // snapshotVal.filter(snap => snap.ticketId === id);
+    console.log(snapshotVal);
+  });
+}
+
 function updateUI(allTickets) {
   let allTicketsAttributes = allTickets.map(ticket => {
-    // console.log(ticket);
     return `
                 <div class="ticket">
                     Subject: ${ticket.Subject}
                     <p>Submitted at: ${ticket.Date}</p>
                     <p>Priority: ${ticket.Priority}</p>
-                    <p>Status: ${ticket.Status}
-                      <select id="ticketPriority" name="Sort" form="sort-form">
+                    <p>Status: ${ticket.Status} 
+                      <br><br>Set Status:
+                      <form>
+                      <select id="ticketStatus" name="Sort" form="sort-form" onclick='changeStatus(this.value, "${ticket.ticketId}")'>
+                        <option value="" disabled selected>Select status...</option>
                         <option value="Unresolved">Unresolved</option>
                         <option value="In Progress">In Progress</option>
                         <option value="Resolved">Resolved</option>
                       </select>
+                      <input type="submit" value="Submit"/>
+                      </form>
                     </p>
                     <p>Email: ${ticket.Request_From}</p>
                     <p>Description: ${ticket.Description}</p>
-                    <button onclick='deleteTicket("${ticket.ticketId}")'>Delete</button>
                 </div>
                `;
   });
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
+  console.log();
 }
 setupObservers();
