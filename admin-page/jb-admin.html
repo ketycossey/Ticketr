@@ -1,0 +1,63 @@
+<html>
+    <head>
+      <link rel="stylesheet" type="style/css" href="jb-admin-styles.css">
+      <meta charset="utf-8">
+      <title>Admin</title>
+    </head>
+    <body>
+        <div id="container">
+          <button id="viewAllButton">All Tickets</button>
+          <div class="sort">
+              <p>Sort Ticket By:</p>
+              <div class="sort-content">
+                <button>Priority</button>
+                <button>ID</button>
+                <button>User</button>
+                <button>Location</button>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </body>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-database.js"></script>
+
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyB1MpSmtgTpFXbVUqvu_n2XacgGE04OszI",
+    authDomain: "ticketr-ff11c.firebaseapp.com",
+    databaseURL: "https://ticketr-ff11c.firebaseio.com",
+    projectId: "ticketr-ff11c",
+    storageBucket: "ticketr-ff11c.appspot.com",
+    messagingSenderId: "866130540420",
+    appId: "1:866130540420:web:15a7bfd5968026012d4fd1",
+    measurementId: "G-Y1DPVM7NVY"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+<script src="jb-admin.js"></script>
+</html>
