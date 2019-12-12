@@ -49,16 +49,19 @@
         <div id="container">
             <div class="row">
               <div class="col-8 offset-md-2 bg-primary jumbotron">
-                  
-                  <div class="sort">
-                      <h3 class="text-light">Sort Tickets By:</h3>
-                      <select id="ticketPriority" onChange="displayOptions(this.value)" name="Sort" form="sort-form">
-                      <option value="" disabled selected>Sort By...</option>
-                      <option value="Date">Date</option>
-                      <option value="Priority">Priority</option>
-                      <option value="Status">Status</option>
-                      </select>
+
+                  <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Sort By</label>
+                      </div>
+                      <select id="ticketPriority" class="custom-select" onChange="displayOptions(this.value)" name="Sort" form="sort-form">
+                          <option value="" disabled selected>Sort By...</option>
+                          <option value="Date">Date</option>
+                          <option value="Priority">Priority</option>
+                          <option value="Status">Status</option>
+                          </select>
                     </div>
+                  
               
                       <div id="allTicketsUL"></div>
       
