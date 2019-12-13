@@ -7,11 +7,17 @@ let page_content = document.getElementById("clear-content-on-login");
 let loginOrOut = document.getElementById("loginorout");
 let script = document.getElementById("script");
 
+page_content.innerHTML = `<h3 class="text-light">Loading <img
+    src="/Ticketr/img/ticketr.png"
+    class="img-fluid" style="width:200px;"
+    alt="TICKETR."
+  /></h3>`;
+
 firebase.auth().onAuthStateChanged(function(user) {
+  
   if (user) {
     // if the user is logged in...
     console.log(user.email);
-    page_content.innerHTML = "";
     navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="viewTickets.html">View Tickets</a>`;
     navItem3.innerHTML = `<a class="nav-link" id="navItem3" href="submitTicket.html">Submit Ticket</a>`;
 

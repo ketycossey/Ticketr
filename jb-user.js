@@ -39,7 +39,8 @@ innerHTML = `<h3 class="text-light">Loading <img
                 alt="TICKETR."
               /></h3>`;
 
-// View all tickets button **** needs to only display tickets for logged-in user
+
+// ****************************** ARCHIVE FUNCTIONS ************************************
 function viewArchive() {
   archiveUL.style.cssText = "display: block;";
   setupArchiveObservers();
@@ -50,6 +51,7 @@ function setupArchiveObservers() {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       archiveRef.on("value", snapshot => {
+
         archiveTickets = [];
 
         let archiveTicketUser = user.email;
@@ -90,6 +92,13 @@ function updateArchiveUI(archiveTickets) {
   archiveUL.innerHTML = allArchiveTicketsAttributes.join("");
 }
 
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+  welcome.innerHTML += `Welcome, ${user.email} !`
+  navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="viewTickets.html">View Tickets</a>`;
+  navItem3.innerHTML = `<a class="nav-link" id="navItem3" href="submitTicket.html">Submit Ticket</a>`;
+}
+  })
 // detects new input and activates function that updates UI
 
 function setupObservers() {
@@ -164,6 +173,7 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Message from Admin: </b>${ticket.AdminMessage}</li>
       <li class="list-group-item"> 
         <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
+        <button class='btn btn-primary' onclick='sendEmail("${ticket.Subject}","${ticket.Date}", "${ticket.Description}")'>Email Admin</button>
       </li>
     </ul>
   </div>
@@ -173,8 +183,13 @@ function updateUI(allTickets) {
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
 }
 
-// adds a ticket to the database upon clicking submit
+// sends an email to the admin, which is currently ticketrproject@gmail.com
+function sendEmail(subject, date, description) {
+  let email = `mailto:ticketrproject@gmail.com?subject=${subject}, ${date}&body=${description}`
+  window.location.href = email
+}
 
+// adds a ticket to the database upon clicking submit
 function submitTicket() {
   let ticketSubject = document.getElementById("ticketSubject");
   let ticketDescription = document.getElementById("ticketDescription");
