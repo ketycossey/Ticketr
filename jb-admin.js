@@ -117,7 +117,6 @@ function displayEmail(input) {
     let userTickets = allTickets.filter(
       ticket => ticket.Request_From === input
     );
-    console.log(userTickets);
     updateUI(userTickets);
   });
 }
@@ -148,7 +147,6 @@ function displayDate() {
       allTickets.push(ticket);
     }
     sortByDate(allTickets);
-    console.log(allTickets);
     //console.log(allTickets);
     updateUI(allTickets);
   });
@@ -200,7 +198,6 @@ function updateUI(allTickets) {
                `;
   });
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
-  console.log();
 }
 
 function sendMessageToUser(ticketId, index) {
