@@ -213,7 +213,9 @@ function submitTicket() {
     Description: description,
     Status: status
   });
+  window.location.href = 'index.html'
 }
+
 
 function signOut() {
   firebase
