@@ -72,7 +72,7 @@ function updateArchiveUI(archiveTickets) {
       return `
       <div class="card">
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"><b class="text-muted">subject:</b> ${archiveTicket.Subject}</li>
+        <li class="list-group-item"><b class="text-muted">Subject:</b> ${archiveTicket.Subject}</li>
         <li class="list-group-item"><b class="text-muted">Submitted at: </b>${archiveTicket.Date}</li>
         <li class="list-group-item"><b class="text-muted">Priority:</b> ${archiveTicket.Priority}</li>
         <li class="list-group-item"><b class="text-muted">Description: </b>${archiveTicket.Description}</li>
@@ -166,7 +166,6 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
       <li class="list-group-item"><b class="text-primary">Status: </b>${ticket.Status}</li>
       <li class="list-group-item"><b class="text-primary">Message from Admin: </b>${ticket.AdminMessage}</li>
-      <li class="list-group-item"><b class="text-primary">Status:</b>${ticket.Status}</li>
       <li class="list-group-item"> 
         <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
       </li>
