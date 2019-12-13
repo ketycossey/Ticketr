@@ -30,17 +30,25 @@ let ticketsRef = root.child("Tickets");
 let archiveRef = root.child("Archived Tickets");
 let navItem2 = document.getElementById("navItem2");
 let navItem3 = document.getElementById("navItem3");
-let viewing = document.getElementById("viewing");
-let signoutButton = document.getElementById("signOutButton");
+let viewing = document.getElementById('viewing')
+let signoutButton = document.getElementById('signOutButton')
+/*
+container.innerHTML = `<h3 class="text-light">Loading <img
+    src="/Ticketr/img/ticketr.png"
+    class="img-fluid" style="width:200px;"
+    alt="TICKETR."
+  /></h3>`;
+*/
+firebase.auth().onAuthStateChanged(function(user) {
+  if(user) {
+    navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="viewTickets.html">View Tickets</a>`;
+    navItem3.innerHTML = `<a class="nav-link" id="navItem3" href="submitTicket.html">Submit Ticket</a>`;
+  } else {
+    window.location.href="login.html"
+  }
+})
 
-innerHTML = `<h3 class="text-light">Loading <img
-                src="/Ticketr/img/ticketr.png"
-                class="img-fluid" style="width:200px;"
-                alt="TICKETR."
-              /></h3>`;
-
-
-// ****************************** ARCHIVE FUNCTIONS ************************************
+// View all tickets button **** needs to only display tickets for logged-in user
 function viewArchive() {
   archiveUL.style.cssText = "display: block;";
   setupArchiveObservers();
@@ -49,9 +57,9 @@ function viewArchive() {
 
 function setupArchiveObservers() {
   firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      archiveRef.on("value", snapshot => {
-
+    
+    if (user) { 
+        archiveRef.on("value", snapshot => {
         archiveTickets = [];
 
         let archiveTicketUser = user.email;
@@ -92,13 +100,6 @@ function updateArchiveUI(archiveTickets) {
   archiveUL.innerHTML = allArchiveTicketsAttributes.join("");
 }
 
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-  welcome.innerHTML += `Welcome, ${user.email} !`
-  navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="viewTickets.html">View Tickets</a>`;
-  navItem3.innerHTML = `<a class="nav-link" id="navItem3" href="submitTicket.html">Submit Ticket</a>`;
-}
-  })
 // detects new input and activates function that updates UI
 
 function setupObservers() {
@@ -173,7 +174,6 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Message from Admin: </b>${ticket.AdminMessage}</li>
       <li class="list-group-item"> 
         <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
-        <button class='btn btn-primary' onclick='sendEmail("${ticket.Subject}","${ticket.Date}", "${ticket.Description}")'>Email Admin</button>
       </li>
     </ul>
   </div>
@@ -183,13 +183,8 @@ function updateUI(allTickets) {
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
 }
 
-// sends an email to the admin, which is currently ticketrproject@gmail.com
-function sendEmail(subject, date, description) {
-  let email = `mailto:ticketrproject@gmail.com?subject=${subject}, ${date}&body=${description}`
-  window.location.href = email
-}
-
 // adds a ticket to the database upon clicking submit
+
 function submitTicket() {
   let ticketSubject = document.getElementById("ticketSubject");
   let ticketDescription = document.getElementById("ticketDescription");
