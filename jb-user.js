@@ -33,11 +33,6 @@ let navItem3 = document.getElementById("navItem3");
 let viewing = document.getElementById('viewing')
 let signoutButton = document.getElementById('signOutButton')
 
-innerHTML = `<h3 class="text-light">Loading <img
-                src="/Ticketr/img/ticketr.png"
-                class="img-fluid" style="width:200px;"
-                alt="TICKETR."
-              /></h3>`
 
 
 // View all tickets button **** needs to only display tickets for logged-in user
@@ -49,6 +44,11 @@ function viewArchive() {
 
 function setupArchiveObservers() {
   firebase.auth().onAuthStateChanged(function(user) {
+    container.innerHTML = `<h3 class="text-light">Loading <img
+                src="/Ticketr/img/ticketr.png"
+                class="img-fluid" style="width:200px;"
+                alt="TICKETR."
+              /></h3>`
     if (user) { 
         archiveRef.on("value", snapshot => {
         archiveTickets = [];
