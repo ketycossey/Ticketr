@@ -101,6 +101,27 @@ function displayStatus() {
   });
 }
 
+function displayEmail(input) {
+  ticketsRef.on("value", snapshot => {
+    allTicketsUL.innerHTML = "";
+    let allTickets = [];
+    let snapshotValue = snapshot.val();
+
+    //console.log(snapshotValue);
+
+    for (let key in snapshotValue) {
+      let ticket = snapshotValue[key];
+      ticket.ticketId = key;
+      allTickets.push(ticket);
+    }
+    let userTickets = allTickets.filter(
+      ticket => ticket.Request_From === input
+    );
+    console.log(userTickets);
+    updateUI(userTickets);
+  });
+}
+
 function displayOptions(value) {
   if (value === "Priority") {
     displayPriority();
