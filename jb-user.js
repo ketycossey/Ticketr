@@ -33,7 +33,7 @@ let viewing = document.getElementById('viewing')
 let signoutButton = document.getElementById('signOutButton')
 
 
-// View all tickets button **** needs to only display tickets for logged-in user
+// ****************************** ARCHIVE FUNCTIONS ************************************
 function viewArchive() {
   archiveUL.style.cssText = "display: block;";
   setupArchiveObservers();
@@ -84,10 +84,6 @@ function updateArchiveUI(archiveTickets) {
   archiveUL.innerHTML = allArchiveTicketsAttributes.join("");
 }
 
-// detects new input and activates function that updates UI
-
-
-
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
   welcome.innerHTML += `Welcome, ${user.email} !`
@@ -96,6 +92,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 }
   })
 
+  // detects new input and activates function that updates UI
 function setupObservers() {
   allTicketsUL.style.cssText = 'display:block'
   viewing.innerHTML = "<h2 class='text-light'>Viewing Open Tickets</h2>";
@@ -168,6 +165,7 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Message from Admin: </b>${ticket.AdminMessage}</li>
       <li class="list-group-item"> 
         <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
+        <button class='btn btn-primary' onclick='sendEmail("${ticket.Subject}","${ticket.Date}", "${ticket.Description}")'>Email Admin</button>
       </li>
     </ul>
   </div>
@@ -177,8 +175,13 @@ function updateUI(allTickets) {
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
 }
 
-// adds a ticket to the database upon clicking submit
+// sends an email to the admin, which is currently ticketrproject@gmail.com
+function sendEmail(subject, date, description) {
+  let email = `mailto:ticketrproject@gmail.com?subject=${subject}, ${date}&body=${description}`
+  window.location.href = email
+}
 
+// adds a ticket to the database upon clicking submit
 function submitTicket() {
   let ticketSubject = document.getElementById("ticketSubject");
   let ticketDescription = document.getElementById("ticketDescription");
