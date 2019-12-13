@@ -1,8 +1,7 @@
-
 var database = firebase.database();
 let root = database.ref();
 let ticketsRef = root.child("Tickets");
-let allTickets = []
+let allTickets = [];
 
 function priorityRanking(Priority) {
   if (Priority == "Low") {
@@ -91,7 +90,6 @@ function displayStatus() {
   ticketsRef.on("value", snapshot => {
     let allTickets = [];
     let snapshotValue = snapshot.val();
-
 
     for (let key in snapshotValue) {
       let ticket = snapshotValue[key];
@@ -185,10 +183,9 @@ function updateUI(allTickets) {
 }
 
 function sendMessageToUser(ticketId, index) {
-  let adminMessage = document.getElementById(`message-box-user${index}`).value
-  database.ref(`Tickets/${ticketId}/AdminMessage`).set(adminMessage)
+  let adminMessage = document.getElementById(`message-box-user${index}`).value;
+  database.ref(`Tickets/${ticketId}/AdminMessage`).set(adminMessage);
 }
-
 
 setupObservers();
 

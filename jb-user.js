@@ -10,8 +10,8 @@
 //archive needs to be permanent
 
 // global variables
-let container = document.getElementById('container')
-let isSolved = document.getElementById('isSolved')
+let container = document.getElementById("container");
+let isSolved = document.getElementById("isSolved");
 let viewAllButton = document.getElementById("viewAllButton");
 let ticketSubject = document.getElementById("ticketSubject");
 let ticketDescription = document.getElementById("ticketDescription");
@@ -30,27 +30,28 @@ let ticketsRef = root.child("Tickets");
 let archiveRef = root.child("Archived Tickets");
 let navItem2 = document.getElementById("navItem2");
 let navItem3 = document.getElementById("navItem3");
-let viewing = document.getElementById('viewing')
-let signoutButton = document.getElementById('signOutButton')
+let viewing = document.getElementById("viewing");
+let signoutButton = document.getElementById("signOutButton");
 
+innerHTML = `<h3 class="text-light">Loading <img
+                src="/Ticketr/img/ticketr.png"
+                class="img-fluid" style="width:200px;"
+                alt="TICKETR."
+              /></h3>`;
 
 
 // ****************************** ARCHIVE FUNCTIONS ************************************
 function viewArchive() {
   archiveUL.style.cssText = "display: block;";
   setupArchiveObservers();
-  allTicketsUL.style.cssText = "display: none"
+  allTicketsUL.style.cssText = "display: none";
 }
 
 function setupArchiveObservers() {
   firebase.auth().onAuthStateChanged(function(user) {
-    container.innerHTML = `<h3 class="text-light">Loading <img
-                src="/Ticketr/img/ticketr.png"
-                class="img-fluid" style="width:200px;"
-                alt="TICKETR."
-              /></h3>`
-    if (user) { 
-        archiveRef.on("value", snapshot => {
+    if (user) {
+      archiveRef.on("value", snapshot => {
+
         archiveTickets = [];
 
         let archiveTicketUser = user.email;
@@ -100,14 +101,10 @@ firebase.auth().onAuthStateChanged(function(user) {
   })
 // detects new input and activates function that updates UI
 
-
-
-
-  // detects new input and activates function that updates UI
 function setupObservers() {
-  allTicketsUL.style.cssText = 'display:block'
+  allTicketsUL.style.cssText = "display:block";
   viewing.innerHTML = "<h2 class='text-light'>Viewing Open Tickets</h2>";
-  archiveUL.style.cssText = "display: none"
+  archiveUL.style.cssText = "display: none";
   // Finds the logged in user
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -126,14 +123,14 @@ function setupObservers() {
         );
         updateUI(filteredTickets);
       });
-    } 
+    }
   });
 }
 
 // this function changes the status of a ticket in the database to cancelled. button is in updateUI
 function cancelTicket(ticketId) {
   database.ref(`Tickets/${ticketId}/Status`).set("Ticket cancelled by user");
-  isSolved.innerHTML = `<button class='btn btn-primary' onclick='cancelTicket("")'>Mark As Unsolved</button>`
+  isSolved.innerHTML = `<button class='btn btn-primary' onclick='cancelTicket("")'>Mark As Unsolved</button>`;
 }
 
 // removes a ticket from the all tickets list and sends it to the archive list. button is in updateUI
@@ -207,7 +204,7 @@ function submitTicket() {
   var user = firebase.auth().currentUser;
   let emailOfUser = user.email;
   let date_db = date;
-  let adminMessage = " "
+  let adminMessage = " ";
   let dateMillisec = dateMil;
   let status = "Unresolved";
 
@@ -229,7 +226,7 @@ function signOut() {
     .signOut()
     .then(
       function() {
-        window.location.href = ('index.html')
+        window.location.href = "index.html";
       },
       function(error) {
         console.error("Sign Out Error", error);
