@@ -10,6 +10,7 @@
 //archive needs to be permanent
 
 // global variables
+let container = document.getElementById('container')
 let isSolved = document.getElementById('isSolved')
 let viewAllButton = document.getElementById("viewAllButton");
 let ticketSubject = document.getElementById("ticketSubject");
@@ -32,6 +33,12 @@ let navItem3 = document.getElementById("navItem3");
 let viewing = document.getElementById('viewing')
 let signoutButton = document.getElementById('signOutButton')
 
+innerHTML = `<h3 class="text-light">Loading <img
+                src="/Ticketr/img/ticketr.png"
+                class="img-fluid" style="width:200px;"
+                alt="TICKETR."
+              /></h3>`
+
 
 // View all tickets button **** needs to only display tickets for logged-in user
 function viewArchive() {
@@ -42,8 +49,8 @@ function viewArchive() {
 
 function setupArchiveObservers() {
   firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      archiveRef.on("value", snapshot => {
+    if (user) { 
+        archiveRef.on("value", snapshot => {
         archiveTickets = [];
 
         let archiveTicketUser = user.email;
@@ -88,13 +95,6 @@ function updateArchiveUI(archiveTickets) {
 
 
 
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-  welcome.innerHTML += `Welcome, ${user.email} !`
-  navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="viewTickets.html">View Tickets</a>`;
-  navItem3.innerHTML = `<a class="nav-link" id="navItem3" href="submitTicket.html">Submit Ticket</a>`;
-}
-  })
 
 function setupObservers() {
   allTicketsUL.style.cssText = 'display:block'
@@ -118,7 +118,7 @@ function setupObservers() {
         );
         updateUI(filteredTickets);
       });
-    }
+    } 
   });
 }
 
