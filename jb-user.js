@@ -10,6 +10,7 @@
 //archive needs to be permanent
 
 // global variables
+let container = document.getElementById('container')
 let isSolved = document.getElementById('isSolved')
 let viewAllButton = document.getElementById("viewAllButton");
 let ticketSubject = document.getElementById("ticketSubject");
@@ -32,6 +33,12 @@ let navItem3 = document.getElementById("navItem3");
 let viewing = document.getElementById('viewing')
 let signoutButton = document.getElementById('signOutButton')
 
+innerHTML = `<h3 class="text-light">Loading <img
+                src="/Ticketr/img/ticketr.png"
+                class="img-fluid" style="width:200px;"
+                alt="TICKETR."
+              /></h3>`
+
 
 // ****************************** ARCHIVE FUNCTIONS ************************************
 function viewArchive() {
@@ -42,8 +49,8 @@ function viewArchive() {
 
 function setupArchiveObservers() {
   firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      archiveRef.on("value", snapshot => {
+    if (user) { 
+        archiveRef.on("value", snapshot => {
         archiveTickets = [];
 
         let archiveTicketUser = user.email;
@@ -91,6 +98,10 @@ firebase.auth().onAuthStateChanged(function(user) {
   navItem3.innerHTML = `<a class="nav-link" id="navItem3" href="submitTicket.html">Submit Ticket</a>`;
 }
   })
+// detects new input and activates function that updates UI
+
+
+
 
   // detects new input and activates function that updates UI
 function setupObservers() {
@@ -115,7 +126,7 @@ function setupObservers() {
         );
         updateUI(filteredTickets);
       });
-    }
+    } 
   });
 }
 
