@@ -21,7 +21,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     // ...
   }
 });
-
+console.log("hello");
 loginButton.addEventListener("click", () => {
   event.preventDefault();
   let email = loginEmailTextBox.value;
