@@ -30,6 +30,8 @@ let archiveRef = root.child("Archived Tickets");
 let navItem2 = document.getElementById("navItem2");
 let navItem3 = document.getElementById("navItem3");
 let viewing = document.getElementById('viewing')
+let signoutButton = document.getElementById('signOutButton')
+
 
 // View all tickets button **** needs to only display tickets for logged-in user
 function viewArchive() {
@@ -114,7 +116,6 @@ function setupObservers() {
         filteredTickets = allTickets.filter(
           ticket => ticket.Request_From === ticketUser
         );
-        console.log(filteredTickets);
         updateUI(filteredTickets);
       });
     }
@@ -132,7 +133,6 @@ function sendTicketToArchive(index) {
   console.log("sending ticket to archive");
   let ticket = filteredTickets[index];
   let ticketID = ticket.ticketId;
-  console.log(ticketID);
   let archivedDate = Date();
   let subject = ticket.Subject;
   let date = ticket.Date;
@@ -164,7 +164,8 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Submitted at: </b>${ticket.Date}</li>
       <li class="list-group-item"><b class="text-primary">Priority:</b> ${ticket.Priority}</li>
       <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
-      <li class="list-group-item"><b class="text-primary">Status:</b>${ticket.Description}</li>
+      <li class="list-group-item"><b class="text-primary">Status: </b>${ticket.Status}</li>
+      <li class="list-group-item"><b class="text-primary">Message from Admin: </b>${ticket.AdminMessage}</li>
       <li class="list-group-item"> 
         <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
       </li>
@@ -181,8 +182,6 @@ function updateUI(allTickets) {
 function submitTicket() {
   let ticketSubject = document.getElementById("ticketSubject");
   let ticketDescription = document.getElementById("ticketDescription");
-  //let allTicketsUL = document.getElementById("allTicketsUL"); //unused variable
-  //let ticketSubmit = document.getElementById("ticketSubmit"); //unused variable
   let ticketPriority = document.getElementById("ticketPriority");
   let date = Date();
   let dateMil = Date.now();
@@ -194,10 +193,12 @@ function submitTicket() {
   var user = firebase.auth().currentUser;
   let emailOfUser = user.email;
   let date_db = date;
+  let adminMessage = " "
   let dateMillisec = dateMil;
   let status = "Unresolved";
 
   ticketsRef.push({
+    AdminMessage: adminMessage,
     DateMil: dateMillisec,
     Date: date_db,
     Request_From: emailOfUser,
@@ -206,4 +207,18 @@ function submitTicket() {
     Description: description,
     Status: status
   });
+}
+
+function signOut() {
+  firebase
+    .auth()
+    .signOut()
+    .then(
+      function() {
+        window.location.href = ('index.html')
+      },
+      function(error) {
+        console.error("Sign Out Error", error);
+      }
+    );
 }

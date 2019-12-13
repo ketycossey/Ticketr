@@ -1,20 +1,10 @@
-// let viewAllButton = document.getElementById("viewAllButton");
-// let ticketSubject = document.getElementById("ticketSubject");
-// let ticketDescription = document.getElementById("ticketDescription");
-// let allTicketsUL = document.getElementById("allTicketsUL");
-// let ticketSubmit = document.getElementById("ticketSubmit");
-// let ticketPriority = document.getElementById("ticketPriority");
-// let userEmail = document.getElementById("userEmail");
-// let date = Date();
 
 var database = firebase.database();
 let root = database.ref();
 let ticketsRef = root.child("Tickets");
 let allTickets = []
 
-
 function priorityRanking(Priority) {
-  // console.log(Priority);
   if (Priority == "Low") {
     return 1;
   } else if (Priority == "Medium") {
@@ -28,7 +18,6 @@ function sortByPriority(allTickets) {
   allTickets.sort((a, b) => {
     return priorityRanking(b.Priority) - priorityRanking(a.Priority);
   });
-  //console.log(allTickets);
 }
 
 function statusRanking(Status) {
@@ -47,7 +36,6 @@ function sortByStatus(allTickets) {
   allTickets.sort((a, b) => {
     return statusRanking(b.Status) - statusRanking(a.Status);
   });
-  //console.log(allTickets);
 }
 
 function setupObservers() {
@@ -55,15 +43,12 @@ function setupObservers() {
     let allTickets = [];
     let snapshotValue = snapshot.val();
 
-    //console.log(snapshotValue);
-
     for (let key in snapshotValue) {
       let ticket = snapshotValue[key];
       ticket.ticketId = key;
       allTickets.push(ticket);
     }
     sortByStatus(allTickets);
-    //console.log(allTickets);
     updateUI(allTickets);
   });
 }
@@ -74,15 +59,12 @@ function displayPriority() {
     let allTickets = [];
     let snapshotValue = snapshot.val();
 
-    //console.log(snapshotValue);
-
     for (let key in snapshotValue) {
       let ticket = snapshotValue[key];
       ticket.ticketId = key;
       allTickets.push(ticket);
     }
     sortByPriority(allTickets);
-    //console.log(allTickets);
     updateUI(allTickets);
   });
 }
@@ -93,7 +75,6 @@ function displayStatus() {
     let allTickets = [];
     let snapshotValue = snapshot.val();
 
-    //console.log(snapshotValue);
 
     for (let key in snapshotValue) {
       let ticket = snapshotValue[key];
@@ -101,13 +82,11 @@ function displayStatus() {
       allTickets.push(ticket);
     }
     sortByStatus(allTickets);
-    //console.log(allTickets);
     updateUI(allTickets);
   });
 }
 
 function displayOptions(value) {
-  //console.log(value);
   if (value === "Priority") {
     displayPriority();
   } else if (value === "Status") {
@@ -120,7 +99,6 @@ function displayOptions(value) {
 }
 
 function changeStatus(newStatus, ticketId) {
-  console.log(ticketId)
   database.ref(`Tickets/${ticketId}/Status`).set(`${newStatus}`);
 }
 
@@ -130,7 +108,6 @@ function deleteTicket(ticketId) {
 
 function updateUI(allTickets) {
   let allTicketsAttributes = allTickets.map((ticket, index) => {
-    // console.log(ticket);
     return `
 
     <div class="card">
@@ -152,6 +129,11 @@ function updateUI(allTickets) {
 <option value="Resolved">Resolved</option>
 </select>
 </div>
+</li>
+<li class="list-group-item">
+  <textarea rows="6" class="form-control" id="message-box-user${index}" placeholder="enter message here"></textarea>
+  <input value="Reply" class="float-right btn btn-primary" type="submit" onclick='sendMessageToUser("${ticket.ticketId}", ${index})' />
+</li>
       <li class="list-group-item">
       <button class="btn btn-primary" onclick='deleteTicket("${ticket.ticketId}")'>Delete</button>
       <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
@@ -159,9 +141,30 @@ function updateUI(allTickets) {
     </ul>
   </div>
 
-        
                `;
   });
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
 }
+
+function sendMessageToUser(ticketId, index) {
+  let adminMessage = document.getElementById(`message-box-user${index}`).value
+  database.ref(`Tickets/${ticketId}/AdminMessage`).set(adminMessage)
+}
+
+
 setupObservers();
+
+function signOut() {
+  firebase
+    .auth()
+    .signOut()
+    .then(
+      function() {
+        message.innerHTML = "Signed Out!";
+        window.location.reload();
+      },
+      function(error) {
+        console.error("Sign Out Error", error);
+      }
+    );
+}
