@@ -9,7 +9,6 @@ let script = document.getElementById("script");
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    
     // if the user is logged in...
     console.log(user.email);
     page_content.innerHTML = "";
@@ -81,3 +80,23 @@ function signOut() {
       }
     );
 }
+
+// firebase
+//   .auth()
+//   .currentUser.getIdTokenResult()
+//   .then(idTokenResult => {
+//     // Confirm the user is an Admin.
+//     if (!!idTokenResult.claims.admin) {
+//       user.loginEmailTextBox.value == "admin1@ticktr.com";
+//       window.location.href = "jb-admin.html";
+
+//       // Show admin UI.
+//       showAdminUI();
+//     } else {
+//       // Show regular user UI.
+//       showRegularUI();
+//     }
+//   })
+//   .catch(error => {
+//     console.log(error);
+//   });
