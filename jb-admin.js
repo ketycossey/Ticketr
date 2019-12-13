@@ -38,6 +38,22 @@ function sortByStatus(allTickets) {
   });
 }
 
+function compareDates(date1, date2) {
+  if (date1 > date2) {
+    return -1;
+  }
+  if (date2 > date1) {
+    return 1;
+  }
+  return 0;
+}
+
+function sortByDate(allTickets) {
+  allTickets.sort((a, b) => {
+    return b.DateMil - a.DateMil;
+  });
+}
+
 function setupObservers() {
   ticketsRef.on("value", snapshot => {
     let allTickets = [];
@@ -49,6 +65,7 @@ function setupObservers() {
       allTickets.push(ticket);
     }
     sortByStatus(allTickets);
+    sortByDate(allTickets);
     updateUI(allTickets);
   });
 }
@@ -92,10 +109,30 @@ function displayOptions(value) {
   } else if (value === "Status") {
     displayStatus();
   } else if (value === "Date") {
-    setupObservers();
+    displayDate();
   } else {
     //calert("Error, your dumbass code isn't working");
   }
+}
+
+function displayDate() {
+  allTicketsUL.innerHTML = "";
+  ticketsRef.on("value", snapshot => {
+    let allTickets = [];
+    let snapshotValue = snapshot.val();
+
+    //console.log(snapshotValue);
+
+    for (let key in snapshotValue) {
+      let ticket = snapshotValue[key];
+      ticket.ticketId = key;
+      allTickets.push(ticket);
+    }
+    sortByDate(allTickets);
+    console.log(allTickets);
+    //console.log(allTickets);
+    updateUI(allTickets);
+  });
 }
 
 function changeStatus(newStatus, ticketId) {
@@ -103,7 +140,7 @@ function changeStatus(newStatus, ticketId) {
 }
 
 function deleteTicket(ticketId) {
-  database.ref(`Tickets/${ticketId}`).remove()
+  database.ref(`Tickets/${ticketId}`).remove();
 }
 
 function updateUI(allTickets) {
@@ -144,6 +181,7 @@ function updateUI(allTickets) {
                `;
   });
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
+  console.log();
 }
 
 function sendMessageToUser(ticketId, index) {

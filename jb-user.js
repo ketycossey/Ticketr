@@ -166,6 +166,7 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
       <li class="list-group-item"><b class="text-primary">Status: </b>${ticket.Status}</li>
       <li class="list-group-item"><b class="text-primary">Message from Admin: </b>${ticket.AdminMessage}</li>
+      <li class="list-group-item"><b class="text-primary">Status:</b>${ticket.Status}</li>
       <li class="list-group-item"> 
         <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
       </li>
