@@ -49,6 +49,12 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 })
 
+/**Sends an email to the admin **/
+function emailAdmin(subject, date, description) {
+  let email = `mailto:ticketrproject@gmail.com?subject=${subject}, ${date}&body=${description}`
+  window.location.href = email
+}
+
 // View all tickets button **** needs to only display tickets for logged-in user
 function viewArchive() {
   archiveUL.style.cssText = "display: block;";
@@ -93,6 +99,7 @@ function updateArchiveUI(archiveTickets) {
         <li class="list-group-item"><b class="text-muted">Submitted at: </b>${archiveTicket.Date}</li>
         <li class="list-group-item"><b class="text-muted">Priority:</b> ${archiveTicket.Priority}</li>
         <li class="list-group-item"><b class="text-muted">Description: </b>${archiveTicket.Description}</li>
+        <li class="list-group-item"><b class="text-muted">Admin Message: </b>${archiveTicket.AdminMessage}</li>
       </ul>
     </div>
                `;
@@ -175,6 +182,7 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Message from Admin: </b>${ticket.AdminMessage}</li>
       <li class="list-group-item"> 
         <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
+        <button class='btn btn-primary' onclick='emailAdmin("${ticket.Subject}","${ticket.Date}", "${ticket.Description}")'>Send a Message to Admin</button>
       </li>
     </ul>
   </div>
