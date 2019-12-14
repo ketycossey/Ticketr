@@ -92,17 +92,17 @@ function setupArchiveObservers() {
 }
 
 function updateArchiveUI(archiveTickets) {
-  viewing.innerHTML = "<h2 class='text-light'>Viewing Archived Tickets</h2>";
+  viewing.innerHTML = "<h2 class='text-primary'>Viewing Archived Tickets</h2>";
   let allArchiveTicketsAttributes = archiveTickets.map(
     (archiveTicket, index) => {
       return `
       <div class="card">
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"><b class="text-muted">Subject:</b> ${archiveTicket.Subject}</li>
-        <li class="list-group-item"><b class="text-muted">Submitted at: </b>${archiveTicket.Date}</li>
-        <li class="list-group-item"><b class="text-muted">Priority:</b> ${archiveTicket.Priority}</li>
-        <li class="list-group-item"><b class="text-muted">Description: </b>${archiveTicket.Description}</li>
-        <li class="list-group-item"><b class="text-muted">Admin Message: </b>${archiveTicket.AdminMessage}</li>
+        <li class="list-group-item bg-light"><b class="text-muted">Subject:</b> ${archiveTicket.Subject}</li>
+        <li class="list-group-item bg-light"><b class="text-muted">Submitted at: </b>${archiveTicket.Date}</li>
+        <li class="list-group-item bg-light"><b class="text-muted">Priority:</b> ${archiveTicket.Priority}</li>
+        <li class="list-group-item bg-light"><b class="text-muted">Description: </b>${archiveTicket.Description}</li>
+        <li class="list-group-item bg-light"><b class="text-muted">Admin Message: </b>${archiveTicket.AdminMessage}</li>
       </ul>
     </div>
                `;
@@ -115,7 +115,7 @@ function updateArchiveUI(archiveTickets) {
 
 function setupObservers() {
   allTicketsUL.style.cssText = "display:block";
-  viewing.innerHTML = "<h2 class='text-light'>Viewing Open Tickets</h2>";
+  viewing.innerHTML = "<h2 class='text-primary'>Viewing Open Tickets</h2>";
   archiveUL.style.cssText = "display: none";
   // Finds the logged in user
   firebase.auth().onAuthStateChanged(function(user) {
@@ -177,15 +177,15 @@ function updateUI(allTickets) {
 
     <div class="card">
     <ul class="list-group list-group-flush">
-      <li class="list-group-item"><b class="text-primary">subject:</b> ${ticket.Subject}</li>
-      <li class="list-group-item"><b class="text-primary">Submitted at: </b>${ticket.Date}</li>
-      <li class="list-group-item"><b class="text-primary">Priority:</b> ${ticket.Priority}</li>
-      <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
-      <li class="list-group-item" id="ticketStatus${index}"><b class="text-primary">Status: </b>${ticket.Status}</li>
-      <li class="list-group-item"><b class="text-primary">Message from Admin: </b>${ticket.AdminMessage}</li>
-      <li class="list-group-item"> 
-        <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
-        <button class='btn btn-primary' onclick='emailAdmin("${ticket.Subject}","${ticket.Date}", "${ticket.Description}")'>Send a Message to Admin</button>
+      <li class="list-group-item bg-light"><b class="text-primary">subject:</b> ${ticket.Subject}</li>
+      <li class="list-group-item bg-light"><b class="text-primary">Submitted at: </b>${ticket.Date}</li>
+      <li class="list-group-item bg-light"><b class="text-primary">Priority:</b> ${ticket.Priority}</li>
+      <li class="list-group-item bg-light"><b class="text-primary">Description: </b>${ticket.Description}</li>
+      <li class="list-group-item bg-light" id="ticketStatus${index}"><b class="text-primary">Status: </b>${ticket.Status}</li>
+      <li class="list-group-item bg-light"><b class="text-primary">Message from Admin: </b>${ticket.AdminMessage}</li>
+      <li class="list-group-item bg-light"> 
+        <button class='btn btn-light' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
+        <button class='btn btn-light' onclick='emailAdmin("${ticket.Subject}","${ticket.Date}", "${ticket.Description}")'>Send a Message to Admin</button>
       </li>
     </ul>
   </div>
