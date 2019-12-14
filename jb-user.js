@@ -44,6 +44,9 @@ firebase.auth().onAuthStateChanged(function(user) {
     navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="viewTickets.html">View Tickets</a>`;
     navItem3.innerHTML = `<a class="nav-link" id="navItem3" href="submitTicket.html">Submit Ticket</a>`;
     userEmail.innerHTML += user.email
+    if(user.email == 'admin1@ticketr.com') {
+      navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="jb-admin.html">Admin Panel</a>`;
+    }
   } else {
     window.location.href="login.html"
   }
@@ -178,7 +181,7 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">Submitted at: </b>${ticket.Date}</li>
       <li class="list-group-item"><b class="text-primary">Priority:</b> ${ticket.Priority}</li>
       <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
-      <li class="list-group-item"><b class="text-primary">Status: </b>${ticket.Status}</li>
+      <li class="list-group-item" id="ticketStatus${index}"><b class="text-primary">Status: </b>${ticket.Status}</li>
       <li class="list-group-item"><b class="text-primary">Message from Admin: </b>${ticket.AdminMessage}</li>
       <li class="list-group-item"> 
         <button class='btn btn-primary' onclick='sendTicketToArchive(${index})'>Mark as Complete</button>
@@ -190,6 +193,7 @@ function updateUI(allTickets) {
                `;
   });
   allTicketsUL.innerHTML = allTicketsAttributes.join("");
+  
 }
 
 // adds a ticket to the database upon clicking submit

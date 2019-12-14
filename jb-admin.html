@@ -18,7 +18,7 @@
     <title>TICKETR</title>
   </head>
 
-  <body>
+  <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-light bg-primary">
       <a class="navbar-brand" href="#"
         >TICKETR.
@@ -52,16 +52,13 @@
       </div>
     </nav>
 
-    <div id="container">
+    <div id="container-fluid">
       <div class="row">
-        <div class="col-8 offset-md-2 bg-primary jumbotron">
-          <div class="input-group mb-3">
+
+        <div class="col-3 ml-1">
+
+          <div class="input-group">
             <div class="input-group-prepend">
-              <input
-                type="text"
-                onkeyup="displayEmail(this.value)"
-                placeholder="Sort by email..."
-              />
               <label class="input-group-text" for="inputGroupSelect01"
                 >Sort By</label
               >
@@ -79,7 +76,18 @@
               <option value="Status">Status</option>
             </select>
           </div>
+          <input
+          type="text" class="form-control mb-3"
+          onkeyup="displayEmail(this.value)"
+          placeholder="Sort by email..."
+        />
+  
+        </div>
 
+
+      </div>
+      <div class="row bg-primary jumbotron">
+        <div class="col">
           <div id="allTicketsUL"></div>
         </div>
       </div>
