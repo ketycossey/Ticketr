@@ -55,7 +55,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 /**Sends an email to the admin **/
 function emailAdmin(subject, date, description) {
   let email = `mailto:ticketrproject@gmail.com?subject=${subject}, ${date}&body=${description}`
-  window.location.href = email
+  window.open(email, '_blank')
 }
 
 // View all tickets button **** needs to only display tickets for logged-in user
@@ -97,7 +97,7 @@ function updateArchiveUI(archiveTickets) {
     (archiveTicket, index) => {
       return `
       <div class="card">
-      <ul class="list-group list-group-flush">
+      <ul class="list-group list-group-flush border border-primary">
         <li class="list-group-item bg-light"><b class="text-muted">Subject:</b> ${archiveTicket.Subject}</li>
         <li class="list-group-item bg-light"><b class="text-muted">Submitted at: </b>${archiveTicket.Date}</li>
         <li class="list-group-item bg-light"><b class="text-muted">Priority:</b> ${archiveTicket.Priority}</li>
@@ -176,7 +176,7 @@ function updateUI(allTickets) {
     return `
 
     <div class="card">
-    <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush border border-primary">
       <li class="list-group-item bg-light"><b class="text-primary">subject:</b> ${ticket.Subject}</li>
       <li class="list-group-item bg-light"><b class="text-primary">Submitted at: </b>${ticket.Date}</li>
       <li class="list-group-item bg-light"><b class="text-primary">Priority:</b> ${ticket.Priority}</li>
@@ -226,7 +226,7 @@ function submitTicket() {
     Description: description,
     Status: status
   });
-  window.location.href = 'index.html'
+  window.location.href = 'viewTickets.html'
 }
 
 
