@@ -226,7 +226,7 @@ function submitTicket() {
     Description: description,
     Status: status
   });
-  window.location.href = 'index.html'
+  window.location.href = 'viewTickets.html'
 }
 
 
