@@ -55,7 +55,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 /**Sends an email to the admin **/
 function emailAdmin(subject, date, description) {
   let email = `mailto:ticketrproject@gmail.com?subject=${subject}, ${date}&body=${description}`
-  window.location.href = email
+  window.open(email, '_blank')
 }
 
 // View all tickets button **** needs to only display tickets for logged-in user
