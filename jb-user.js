@@ -31,7 +31,7 @@ let archiveRef = root.child("Archived Tickets");
 let navItem2 = document.getElementById("navItem2");
 let navItem3 = document.getElementById("navItem3");
 let viewing = document.getElementById('viewing')
-let signoutButton = document.getElementById('signOutButton')
+
 /*
 container.innerHTML = `<h3 class="text-light">Loading <img
     src="/Ticketr/img/ticketr.png"
@@ -39,11 +39,12 @@ container.innerHTML = `<h3 class="text-light">Loading <img
     alt="TICKETR."
   /></h3>`;
 */
+
+
 firebase.auth().onAuthStateChanged(function(user) {
   if(user) {
     navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="viewTickets.html">View Tickets</a>`;
     navItem3.innerHTML = `<a class="nav-link" id="navItem3" href="submitTicket.html">Submit Ticket</a>`;
-    userEmail.innerHTML += user.email
     if(user.email == 'admin1@ticketr.com') {
       navItem2.innerHTML = `<a class="nav-link" id="navItem2" href="jb-admin.html">Admin Panel</a>`;
     }
@@ -97,7 +98,7 @@ function updateArchiveUI(archiveTickets) {
     (archiveTicket, index) => {
       return `
       <div class="card">
-      <ul class="list-group list-group-flush border border-primary">
+      <ul class="list-group list-group-flush border border-warning text-muted">
         <li class="list-group-item bg-light"><b class="text-muted">Subject:</b> ${archiveTicket.Subject}</li>
         <li class="list-group-item bg-light"><b class="text-muted">Submitted at: </b>${archiveTicket.Date}</li>
         <li class="list-group-item bg-light"><b class="text-muted">Priority:</b> ${archiveTicket.Priority}</li>
