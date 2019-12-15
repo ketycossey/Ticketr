@@ -51,21 +51,19 @@
       </div>
     </nav>
 
-    <div class="container">
-      <div class="row jumbotron bg-primary" id="clear-content-on-login">
-        <div class="col">
-            <h1 class='text-light'>Submit a Ticket</h1>
-            
-              
-            <div class='form-group'>
-              <label class='text-light'>Hello, <b id="userEmail"></b></label><br/>
-              <label class='text-light'>Ticket Subject</label>
-              <input type="text" class="form-control" id="ticketSubject" placeholder="subject">
-              <label for="exampleFormControlTextarea1" class='text-light'>Ticket Description</label>
-              <textarea class="form-control" id="ticketDescription" rows="3"></textarea>
+    <div class="container-fluid">
+      <div class="row" id="clear-content-on-login">
+        <div class="col-8 offset-2">
+          <div id="welcome-message"></div>
+            <h1 class='text-primary'>Submit a Ticket</h1>
+            <div class='form-group text-primary'>
+              <p>Ticket Subject</p>
+              <input type="text" class="mb-2 form-control border border-primary" id="ticketSubject" placeholder="subject">
+              <label>Ticket Description</label>
+              <textarea class="mb-2 form-control border border-primary" id="ticketDescription" rows="3"></textarea>
                   <div class="form-group">
-                      <label for="exampleFormControlSelect1" class="text-light" >Ticket Priority</label>
-                      <select class="form-control" id="ticketPriority">
+                      <label>Ticket Priority</label>
+                      <select class="form-control border border-primary" id="ticketPriority">
                           <option>High</option>
                           <option>Medium</option>
                           <option>Low</option>
@@ -106,5 +104,6 @@
     <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-auth.js"></script>
     <script src="js/connect.js"></script>
     <script src="jb-user.js"></script>
+    <script src="login.js"></script>
   </body>
 </html>

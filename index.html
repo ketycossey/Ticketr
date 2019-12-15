@@ -52,22 +52,25 @@
       </div>
     </nav>
 
-    <div class="container-fluid ">
+    <div id="container-fluid">
       <div class="row" id="clear-content-on-login">
-        <div class="col-6 offset-3 mb-1">
+        <div class="col-8 offset-2 mb-1">
+          <div id="welcome-message"></div>
            <h1>Welcome to</h1>
            <img class="img-fluid" src="img/ticketr.png"> 
            <h5 class='text-center'>Where you need help, we've got the solution.</h5>
-           <a class="btn btn-light float-right ml-1" href="login.html">Log In</a>
-          <a class="btn btn-light float-right" href="register.html">Register</a>
+           <div id="replace-buttons">
+            <a class="btn btn-light float-right ml-1" href="login.html">Log In</a>
+            <a class="btn btn-light float-right" href="register.html">Register</a>
+           </div>
         </div>
       </div>
       <div class="row bg-primary p-2">
-        <div class="col-2 offset-2">
+        <div class="col-4 offset-2">
           <img src="img/message-img.png" class="img-fluid">
         </div>
-        <div class="col-4">
-          <ul class="list-group list-group-flush text-center text-light">
+        <div class="col-6">
+          <ul class="list-group list-group-flush text-left text-light">
             <h1>New Features</h1>
             <li class="list-group-item bg-primary">- Admin can now message user</li>
             <li class="list-group-item bg-primary">- User can now Email Admin</li>
