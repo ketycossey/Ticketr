@@ -171,7 +171,8 @@ function updateUI(allTickets) {
       <li class="list-group-item"><b class="text-primary">User Email: </b> ${ticket.Request_From}</li>
       <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
       <li class="list-group-item"><b class="text-primary">Date Submitted: </b>${ticket.Date}</li>
-      <li class="list-group-item"><b class="text-primary">Status: </b>${ticket.Status}
+      <li class="list-group-item"><b class="text-primary">Status: </b>${ticket.Status}</li>
+      <li class="list-group-item"><b class="text-primary">Your Reply?</b>${ticket.adminMessage}</li>
       <div class="input-group mb-3">
 <div class="input-group-prepend">
 <label class="input-group-text">Status</label>
