@@ -166,7 +166,7 @@ function updateUI(allTickets) {
 
     <div class="card">
     <ul class="list-group list-group-flush">
-    <li class="list-group-item"><b class="text-primary">Subject:</b> ${ticket.Request_From}</li>
+    <li class="list-group-item"><b class="text-primary">Subject:</b> ${ticket.Subject}</li>
     <li class="list-group-item"><b class="text-primary">Priority: </b> ${ticket.Priority}
       <li class="list-group-item"><b class="text-primary">User Email: </b> ${ticket.Request_From}</li>
       <li class="list-group-item"><b class="text-primary">Description: </b>${ticket.Description}</li>
